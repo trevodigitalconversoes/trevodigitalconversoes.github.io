@@ -49,6 +49,3 @@ Pages puro.
 4. `<meta name="robots">` foi trocado para `index,follow`.
 5. Se a página estiver em campanha ativa, ela pode ser incluída na
    seção "Produtos anunciados" da home (`/index.html`).
-
-Ver `/docs/relatorio_migracao_org_v1.md` (raiz do repositório) para o
-histórico completo desta reorganização.

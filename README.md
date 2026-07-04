@@ -9,8 +9,10 @@ ele, tudo servido pelo GitHub Pages da organização.
 - **Remote:** `https://github.com/trevodigitalconversoes/trevodigitalconversoes.github.io.git`
 - **URL raiz (produção):** `https://trevodigitalconversoes.github.io/`
 
-> Repositório **público**. Nenhum arquivo `.env` real, hotlink,
-> credencial ou dado sensível deve ser commitado — ver `.gitignore`.
+> Repositório **público**. Nenhum arquivo `.env` real, token, senha, chave
+> de API, cookie, sessão, credencial ou dado sensível deve ser commitado —
+> ver `.gitignore`. Links de afiliado usados publicamente nas páginas
+> podem aparecer no HTML quando fizerem parte da página publicada.
 
 ## Estrutura
 
@@ -24,7 +26,7 @@ aprovacao/                                # páginas em revisão (ver aprovacao/
   100-aplicativos-uteis/                  # uma página específica em revisão
     index.html, styles.css, fonts/        # HTML+CSS estático, sem build, zero JavaScript
     favicon.svg, og-image.svg
-    docs/                                 # copy, compliance e histórico da página
+    docs/                                 # compliance e decisão de arquitetura da página
 produtos/                                 # (ainda não existe) páginas já aprovadas/públicas
 ```
 
@@ -65,7 +67,7 @@ repositório.
 
 | Caminho | Produto | Status |
 |---|---|---|
-| `/aprovacao/100-aplicativos-uteis/` | "+100 Aplicativos Úteis para Produtividade Empreendedora" (Hotmart) | Rascunho — aguardando hotlink de afiliado real, data de verificação, contato e aprovação da produtora |
+| `/aprovacao/100-aplicativos-uteis/` | "+100 Aplicativos Úteis para Produtividade Empreendedora" (Hotmart) | Rascunho — hotlink de afiliado já configurado; aguardando data de verificação e aprovação da produtora |
 
 ### `/aprovacao/100-aplicativos-uteis/` — HTML+CSS estático, zero JavaScript
 
@@ -80,15 +82,13 @@ para o histórico completo dessa troca, e
 `docs/auditoria_100_aplicativos_uteis.md` para a auditoria de
 pré-publicação.
 
-**CTA "Ver produto na Hotmart" — link temporário, não afiliado:** enquanto
-não houver hotlink de afiliado real aprovado/configurado, os dois botões
-de CTA apontam para a **URL pública oficial do produto na Hotmart** (sem
-parâmetro de afiliado):
-`https://hotmart.com/pt-br/marketplace/produtos/100-aplicativos-uteis-para-produtividade-empreendedora/N87977370D`.
-Isso é avisado explicitamente na própria página (seção "Avisos
-importantes"). Quando o hotlink de afiliado for definido, ele deve
-substituir essa URL diretamente nos dois `<a>` de CTA em `index.html` —
-não há mais variável de ambiente ou build envolvidos.
+**CTA "Ver produto na Hotmart" — hotlink de afiliado configurado:** os
+dois botões de CTA usam o link otimizado para Google Ads, derivado do
+hotlink de afiliado confirmado na área de Hotlinks da Hotmart, e
+preservam o rastreamento de afiliado (`target="_blank"`,
+`rel="noopener noreferrer sponsored"`). Ver
+`aprovacao/100-aplicativos-uteis/docs/compliance.md` para o link
+completo e os testes recomendados antes de qualquer campanha paga.
 
 **Por que não há analytics/tags nesta fase:** a página está em rascunho,
 sem aprovação da produtora, e não deve gerar dados de terceiros
@@ -116,18 +116,12 @@ isso fica a cargo de quem revisar as mudanças localmente.
 
 ## Documentação
 
-- `docs/relatorio_migracao_org_v1.md` — relatório da migração do
-  repositório antigo (`correa0inaiara/trevo-digital-conversoes`) para
-  este repositório da organização, e da reorganização de
-  `paginas-de-vendas/aguardando-aprovacao/` para `/aprovacao/`.
 - `docs/auditoria_100_aplicativos_uteis.md` — auditoria de
   pré-publicação da landing "+100 Aplicativos Úteis" (clareza, conversão,
   confiança, compliance, SEO, acessibilidade, performance,
   compatibilidade, publicação, risco de aprovação).
-- `docs/relatorio_final_v2.md` — relatório desta rodada (arquivos
-  alterados/criados/removidos, comandos executados, pendências).
 - `aprovacao/README.md` — convenção da área de revisão (não é servido
   como página pública).
 - `aprovacao/100-aplicativos-uteis/README.md` e `docs/` — documentação
   técnica da landing page (arquitetura estática, pendências, decisão de
-  migração de React para HTML estático).
+  usar HTML+CSS estático sem JavaScript).

@@ -35,9 +35,9 @@ Data da auditoria: 2026-07-04
 - Seção "Sobre a criadora" é respeitosa, cita apenas dado público (nome
   no marketplace, tempo de plataforma), sem tom defensivo ou crítico a
   outros produtos dela.
-- Seção "Avisos importantes" tem um card específico avisando que o CTA
-  aponta para a URL pública da Hotmart, e não para um hotlink de
-  afiliado — transparência adicional que vai além do exigido.
+- CTA usa o hotlink de afiliado (link otimizado para Google Ads),
+  preservando o rastreamento de comissão de forma transparente para o
+  visitante.
 - **Avaliação: transparente, sem assustar o visitante.**
 
 ## 4. Compliance
@@ -127,11 +127,9 @@ Data da auditoria: 2026-07-04
 - Nenhum trecho fala mal do produto, da criadora ou de outros produtos
   dela.
 - Nenhuma promessa exagerada que a produtora precisaria desmentir depois.
-- O único ponto que pode gerar uma pergunta da produtora é o CTA apontar
-  para a URL pública da Hotmart em vez do hotlink de afiliado — isso é
-  esperado e está claramente documentado como temporário (na própria
-  página, no README e nesta auditoria), então não deve ser lido como erro
-  se explicado no envio.
+- O CTA já usa o hotlink de afiliado (link otimizado para Google Ads),
+  então não há pendência técnica que precise ser explicada à produtora
+  nesse ponto.
 - Nada precisa ser removido antes do envio; os avisos/ressalvas já estão
   concentrados no final, não atrapalhando a leitura do produto.
 
@@ -141,14 +139,16 @@ Data da auditoria: 2026-07-04
 
 A página corrige o problema crítico da versão anterior (dependência de
 JavaScript para conteúdo principal), preserva integralmente o copy já
-validado em compliance, e está tecnicamente pronta para envio à
-produtora. As ressalvas abaixo **não bloqueiam o envio para revisão da
-produtora**, mas bloqueiam a troca para `index,follow`/campanha paga:
+validado em compliance, já usa o hotlink de afiliado (link otimizado
+para Google Ads, hotlink base confirmado:
+`https://go.hotmart.com/Q106592213V`) e está tecnicamente pronta para
+envio à produtora. As ressalvas abaixo **não bloqueiam o envio para
+revisão da produtora**, mas bloqueiam a troca para `index,follow`/início
+de campanha paga:
 
-1. CTA usa a URL pública oficial da Hotmart (não afiliada) —
-   temporário, já documentado; precisa virar hotlink de afiliado real
-   antes de qualquer campanha.
+1. Teste manual do clique no CTA, confirmando redirecionamento correto
+   para a página do produto na Hotmart.
 2. Data de verificação de preço/garantia ainda não preenchida.
 3. Aprovação explícita da produtora ainda não obtida.
-4. `robots` deve permanecer `noindex,nofollow` até os itens 1–3 serem
-   resolvidos.
+4. Decisão futura sobre indexação: `robots` deve permanecer
+   `noindex,nofollow` até os itens 1–3 serem resolvidos.

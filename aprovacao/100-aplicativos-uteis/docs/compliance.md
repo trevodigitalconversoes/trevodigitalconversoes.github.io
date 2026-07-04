@@ -4,11 +4,8 @@ Checklist de regras obrigatórias e como cada uma é garantida no HTML
 estático publicado (`../index.html`, `../styles.css`). Revise este
 documento antes de aceitar qualquer alteração de copy.
 
-> Este checklist foi originalmente escrito para a versão em Vite+React do
-> projeto (ver `relatorio_auditoria_conversao_v1.md` e
-> `relatorio_final_saneamento_v1.md`, preservados nesta pasta como
-> histórico). Ele foi adaptado para a versão atual, em HTML+CSS estático
-> sem build e sem nenhum `<script>` — ver `decisao_migracao_html_estatico.md`.
+> Este checklist foi adaptado para a versão atual da página, em HTML+CSS
+> estático, sem build e sem JavaScript — ver `decisao_migracao_html_estatico.md`.
 
 ## Estrutura da página
 | Regra | Status | Onde é garantido |
@@ -66,20 +63,35 @@ da página e no relatório final.
 ## Robots / indexação
 `<meta name="robots" content="noindex,nofollow">` fixo no HTML, sem
 depender de nenhuma variável de build (não há mais build). Só deve virar
-`index,follow` manualmente, depois de: hotlink de afiliado real
-configurado, aprovação explícita da produtora, e revisão final de
-conteúdo.
+`index,follow` manualmente, depois de: aprovação explícita da produtora
+e revisão final de conteúdo. O hotlink de afiliado já está configurado
+(ver seção abaixo) — isso não é mais uma pendência para a troca de
+`robots`.
 
-## CTA da Hotmart — link temporário, não afiliado
-O botão "Ver produto na Hotmart" aponta, temporariamente, para a **URL
-pública oficial do produto na Hotmart** (sem parâmetro de afiliado):
-`https://hotmart.com/pt-br/marketplace/produtos/100-aplicativos-uteis-para-produtividade-empreendedora/N87977370D`.
-Isso **não é** o hotlink de afiliado definitivo — é um link real e
-funcional (não `href="#"`, não desabilitado), usado apenas até que o
-hotlink de afiliado seja aprovado/configurado. A seção "Avisos
-importantes" tem um card específico avisando isso explicitamente ao
-visitante. Quando o hotlink de afiliado real for definido, ele deve
-substituir essa URL nos dois CTAs (`index.html`).
+## CTA da Hotmart — hotlink de afiliado configurado
+O botão "Ver produto na Hotmart" (hero e CTA final) usa o link otimizado
+para Google Ads, derivado do hotlink de afiliado confirmado na área de
+Hotlinks da Hotmart:
+
+```
+https://go.hotmart.com/Q106592213V?redirectionUrl=https%3A%2F%2Fhotmart.com%2Fpt-br%2Fmarketplace%2Fprodutos%2F100-aplicativos-uteis-para-produtividade-empreendedora%2FN87977370D
+```
+
+Hotlink base (sem o parâmetro de redirecionamento para Google Ads):
+`https://go.hotmart.com/Q106592213V`. O link usado nos CTAs preserva o
+rastreamento de afiliado (gera comissão em compras via esse link) —
+`target="_blank"`, `rel="noopener noreferrer sponsored"` em ambos.
+
+**Antes de iniciar campanha paga**, ainda é necessário:
+1. Testar manualmente o clique no CTA e confirmar que redireciona
+   corretamente para a página do produto na Hotmart.
+2. Confirmar na Hotmart e no Google Ads se esse é o formato de link
+   recomendado para a campanha (o parâmetro `redirectionUrl` foi gerado
+   como link otimizado para Ads).
+3. Preencher a data real de verificação de preço/garantia
+   (`[INSERIR_DATA_DE_VERIFICACAO]` na seção "Informações observadas na
+   Hotmart").
+4. Obter aprovação explícita da produtora sobre o conteúdo.
 
 ## Acessibilidade (resumo)
 - Link "Pular para o conteúdo" (`.skip-link`).

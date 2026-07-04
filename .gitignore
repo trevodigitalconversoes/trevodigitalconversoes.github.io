@@ -1,4 +1,4 @@
-# Variáveis de ambiente locais — nunca commitar segredos/hotlinks reais
+# Variáveis de ambiente locais — nunca commitar segredos, tokens, chaves, cookies, sessões ou credenciais
 .env
 .env.*
 !.env.example

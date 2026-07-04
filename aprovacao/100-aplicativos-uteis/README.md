@@ -15,9 +15,8 @@ HTML + CSS estático, **sem build e sem nenhum JavaScript**:
 - `styles.css` — estilos, com `@font-face` apontando para `fonts/`.
 - `fonts/` — arquivos `.woff2` self-hosted (Sora + Instrument Sans).
 - `favicon.svg`, `og-image.svg`.
-- `docs/` — copy completa, checklist de compliance e histórico do
-  projeto anterior (ver `docs/decisao_migracao_html_estatico.md` para o
-  motivo da troca de Vite+React para HTML estático).
+- `docs/` — checklist de compliance (`compliance.md`) e o registro da
+  decisão de arquitetura (`decisao_migracao_html_estatico.md`).
 
 Para editar o conteúdo, edite `index.html` diretamente — não há passo de
 build.
@@ -31,17 +30,16 @@ https://trevodigitalconversoes.github.io/aprovacao/100-aplicativos-uteis/
 ## Status atual
 
 - **JavaScript:** nenhum. Zero `<script>` na página.
-- **Robots:** `noindex,nofollow` (rascunho — não deve ser indexado).
-- **CTA "Ver produto na Hotmart":** aponta temporariamente para a URL
-  pública oficial do produto na Hotmart (sem parâmetro de afiliado):
-  `https://hotmart.com/pt-br/marketplace/produtos/100-aplicativos-uteis-para-produtividade-empreendedora/N87977370D`.
-  **Este ainda não é o hotlink de afiliado** — é um link real e
-  funcional, usado apenas até a aprovação/configuração do hotlink
-  definitivo. Isso é avisado explicitamente na seção "Avisos
-  importantes" da própria página.
+- **Robots:** `noindex,nofollow` (rascunho — não deve ser indexado até
+  aprovação da produtora).
+- **CTA "Ver produto na Hotmart":** hotlink de afiliado já configurado —
+  usa o link otimizado para Google Ads (derivado do hotlink base
+  confirmado na área de Hotlinks da Hotmart), preservando o rastreamento
+  de afiliado. Ver `docs/compliance.md` para o link completo e os testes
+  recomendados antes de campanha paga.
 - **Data de verificação (preço/garantia na Hotmart):** ainda não
-  preenchida — a seção "Informações observadas na Hotmart" usa o texto
-  genérico sem data.
+  preenchida — a seção "Informações observadas na Hotmart" usa o
+  placeholder `[INSERIR_DATA_DE_VERIFICACAO]`.
 - **Contato:** aponta para `https://trevodigitalconversoes.github.io/#contato`.
 - **Aprovação da produtora:** pendente.
 
@@ -58,12 +56,14 @@ dados sensíveis.
 
 ## Pendências antes de rodar anúncios (preencher manualmente)
 
-1. Hotlink de afiliado real da Hotmart — substituir a URL pública oficial
-   nos dois `<a class="button primary">` de `index.html`.
-2. Data real em que preço/garantia foram conferidos na Hotmart.
-3. Canal de contato definitivo do Trevo Digital Conversões, se diferente
+1. Testar manualmente o clique no CTA e confirmar que o hotlink redireciona
+   corretamente para a página do produto na Hotmart.
+2. Confirmar na Hotmart/Google Ads se o link otimizado (com
+   `redirectionUrl`) é o formato recomendado para a campanha planejada.
+3. Data real em que preço/garantia foram conferidos na Hotmart.
+4. Canal de contato definitivo do Trevo Digital Conversões, se diferente
    do atual.
-4. Aprovação explícita da produtora sobre o conteúdo.
-5. Só depois de todo o acima: mover a pasta para
+5. Aprovação explícita da produtora sobre o conteúdo.
+6. Só depois de todo o acima: mover a pasta para
    `/produtos/100-aplicativos-uteis/`, trocar `robots` para
    `index,follow`, e atualizar `canonical`/Open Graph para o novo caminho.
