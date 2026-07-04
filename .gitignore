@@ -1,1 +1,10 @@
-README.md
+# Variáveis de ambiente locais — nunca commitar segredos/hotlinks reais
+.env
+.env.*
+!.env.example
+
+node_modules/
+dist/
+
+# Configuração local de ferramenta (Claude Code) — não faz parte do site
+.claude/

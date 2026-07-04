@@ -1,0 +1,310 @@
+/* Fontes self-hosted (arquivos locais, sem CDN externa) */
+@font-face {
+  font-family: "Instrument Sans";
+  src: url("fonts/instrument-sans-latin-400-normal-DRC__1Mx.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Sans";
+  src: url("fonts/instrument-sans-latin-500-normal-Dk9ku72i.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Sans";
+  src: url("fonts/instrument-sans-latin-600-normal-B7fBEWYG.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Sans";
+  src: url("fonts/instrument-sans-latin-700-normal-CYfAanHo.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sora";
+  src: url("fonts/sora-latin-600-normal-Cdg4DaK0.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sora";
+  src: url("fonts/sora-latin-700-normal-9waGdLWo.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sora";
+  src: url("fonts/sora-latin-800-normal-2tKLL3qT.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-ink: #1c1633;
+  --color-ink-soft: #4a4363;
+  --color-white-warm: #fdfcff;
+  --color-lilac-50: #f4f1fc;
+  --color-lilac-100: #e9e3f9;
+  --color-deep-purple: #231352;
+  --color-violet: #5b4bd6;
+  --color-violet-soft: #7a5be8;
+  --color-magenta: #c238a8;
+  --color-magenta-soft: #e86bd0;
+  --color-on-dark: #f1edff;
+  --color-muted: #8b82a8;
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--color-white-warm);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  color: var(--color-ink);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+h1 { font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 800; }
+h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; margin-top: 0; }
+h3 { font-size: 1.1rem; font-weight: 600; }
+
+p { color: var(--color-ink-soft); }
+
+a { color: var(--color-violet); }
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  background: var(--color-ink);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 0 0 8px 0;
+  z-index: 200;
+}
+.skip-link:focus {
+  left: 0;
+  top: 0;
+}
+
+:focus-visible {
+  outline: 2.5px solid var(--color-violet);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.top-bar {
+  background: var(--color-deep-purple);
+  color: var(--color-on-dark);
+  text-align: center;
+  font-size: 0.85rem;
+  padding: 8px 16px;
+}
+.top-bar p { color: var(--color-on-dark); margin: 0; }
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px clamp(18px, 4vw, 56px);
+  border-bottom: 1px solid var(--color-lilac-100);
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-decoration: none;
+  color: var(--color-ink);
+}
+
+.site-header nav {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.site-header nav a {
+  text-decoration: none;
+  color: var(--color-ink-soft);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.site-header nav a:hover { color: var(--color-violet); }
+
+main { max-width: 960px; margin: 0 auto; padding: 0 clamp(18px, 4vw, 40px); }
+
+.section { padding: 56px 0; border-bottom: 1px solid var(--color-lilac-100); }
+.section-alt { background: var(--color-lilac-50); margin: 0 calc(-1 * clamp(18px, 4vw, 40px)); padding: 56px clamp(18px, 4vw, 40px); }
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-magenta);
+  margin-bottom: 8px;
+}
+
+.hero { padding: 64px 0 48px; text-align: center; }
+.hero .lead { max-width: 640px; margin: 16px auto 28px; font-size: 1.05rem; }
+.highlight { color: var(--color-magenta); }
+
+.hero-actions, .final-cta { text-align: center; }
+.hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+.button.primary {
+  background: linear-gradient(90deg, var(--color-violet), var(--color-magenta));
+  color: #fff;
+}
+.button.secondary {
+  border: 1.5px solid var(--color-lilac-100);
+  color: var(--color-ink);
+}
+.button.disabled {
+  background: #c9c3de;
+  color: #5a5372;
+  cursor: not-allowed;
+}
+
+.microcopy { font-size: 0.85rem; color: var(--color-muted); }
+.complement { font-size: 0.9rem; color: var(--color-muted); }
+
+.tag-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 0;
+  margin: 24px 0 0;
+}
+.tag-list li {
+  background: var(--color-lilac-50);
+  border: 1px solid var(--color-lilac-100);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  color: var(--color-ink-soft);
+}
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 28px; }
+.card {
+  background: var(--color-lilac-50);
+  border: 1px solid var(--color-lilac-100);
+  border-radius: 16px;
+  padding: 20px;
+}
+.card p { margin-bottom: 0; font-size: 0.92rem; }
+.card h3 { margin-top: 0; }
+
+.check-list, .audience-list { padding-left: 1.2rem; }
+.check-list li, .audience-list li { margin-bottom: 8px; }
+
+.dot-list { list-style: none; padding: 0; display: grid; gap: 10px; }
+.dot-list li { display: flex; align-items: center; gap: 10px; }
+.dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.dot-1 { background: #A99BFF; }
+.dot-2 { background: #E86BD0; }
+.dot-3 { background: #7A5BE8; }
+.dot-4 { background: #C238A8; }
+.dot-5 { background: #8FA7FF; }
+
+.audience-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.audience-list li {
+  background: var(--color-lilac-50);
+  border: 1px solid var(--color-lilac-100);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.closing { font-style: italic; margin-top: 20px; }
+
+.scenario-list { padding-left: 1.2rem; }
+.scenario-list li { margin-bottom: 14px; }
+
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 20px 0; }
+.info-grid dt { font-weight: 700; color: var(--color-ink); font-size: 0.85rem; }
+.info-grid dd { margin: 4px 0 0; color: var(--color-ink-soft); }
+.footnote { font-size: 0.85rem; color: var(--color-muted); }
+
+.disclaimer { font-size: 0.9rem; color: var(--color-muted); margin-top: 20px; }
+
+.faq-item, .legal-item {
+  border: 1px solid var(--color-lilac-100);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  background: #fff;
+}
+.faq-item summary, .legal-item summary {
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--color-ink);
+}
+.faq-item p, .legal-item p { margin-bottom: 0; margin-top: 10px; font-size: 0.92rem; }
+.legal-item p + p { margin-top: 10px; }
+
+.notices { background: var(--color-lilac-50); margin: 0 calc(-1 * clamp(18px, 4vw, 40px)); padding: 56px clamp(18px, 4vw, 40px); }
+.notice-cards .card { background: #fff; }
+
+.final-cta { padding: 64px 0; }
+.final-cta .button { margin: 16px 0 8px; }
+
+.site-footer {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px clamp(18px, 4vw, 40px) 60px;
+}
+.site-footer .copyright { font-weight: 600; color: var(--color-ink); }
+.site-footer .small { font-size: 0.8rem; color: var(--color-muted); }
+
+@media (max-width: 640px) {
+  .site-header nav { gap: 12px; }
+  .section, .section-alt, .notices { padding-top: 40px; padding-bottom: 40px; }
+}
