@@ -1,10 +1,18 @@
-# ⚠ `/aprovacao/` — revisão de páginas específicas (não é um índice público)
+# ⚠ `/aprovacao/` — revisão controlada, opcional (não é um índice público)
 
 Este arquivo é documentação para quem mantém o repositório — **não é
 servido como página**. O que os visitantes veem em
 `https://trevodigitalconversoes.github.io/aprovacao/` é `index.html`
 nesta mesma pasta: uma mensagem genérica, sem listar nenhuma página,
 produto ou produtora.
+
+**Esta pasta é uma área opcional de revisão controlada** — inclusive
+para QA interno, sem envolver terceiros. Uma página estar em
+`/aprovacao/<slug>/` **não implica** que ela foi ou será enviada a uma
+produtora para aprovação; significa apenas que ainda não foi movida
+para `/produtos/` (publicação com `index,follow`). Ver
+`docs/ADR_PRESELL_OWNERSHIP.md` para a regra completa sobre quando
+contato com a produtora é (ou não) necessário.
 
 ## Convenção
 
@@ -38,7 +46,15 @@ Pages puro.
 
 ## Quando mover uma página para `/produtos/`
 
-1. A produtora/cliente aprovou o conteúdo (quando aplicável).
+Não existe uma exigência geral de aprovação da produtora antes de
+publicar. Contato com a produtora só é necessário quando uma regra
+explícita exigir (regra do produto, da Hotmart, da plataforma de
+anúncios usada, contrato, ou legislação aplicável — ver
+`docs/ADR_PRESELL_OWNERSHIP.md`). Fora desses casos, a página pode
+avançar para `/produtos/` assim que:
+
+1. Quando aplicável, a exigência específica de aprovação (se houver
+   uma) foi cumprida.
 2. Os valores reais estão preenchidos diretamente no HTML da página
    (hotlink de afiliado real da Hotmart, data de verificação de
    preço/garantia).

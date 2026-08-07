@@ -21,12 +21,14 @@ index.html, styles.css, assets/          # site institucional (estático, sem bu
 404.html, robots.txt
 politica-de-privacidade.html, termos-de-uso.html
 docs/                                     # documentação/relatórios do repositório
-aprovacao/                                # páginas em revisão (ver aprovacao/README.md)
+aprovacao/                                # páginas em revisão controlada, opcional (ver aprovacao/README.md)
   index.html                              # mensagem genérica — NÃO lista páginas
   100-aplicativos-uteis/                  # uma página específica em revisão
     index.html, styles.css, fonts/        # HTML+CSS estático, sem build, zero JavaScript
     favicon.svg, og-image.svg
     docs/                                 # compliance e decisão de arquitetura da página
+  fotografia-presets-lightroom/           # migrada de afiliados-mega-lab PR #51
+    index.html, styles.css, assets/       # HTML+CSS estático, sem build, zero JavaScript
 produtos/                                 # (ainda não existe) páginas já aprovadas/públicas
 ```
 
@@ -56,18 +58,20 @@ detalhamento completo dessa ressalva.
 
 ## `/produtos/` — páginas aprovadas e públicas (futuro)
 
-Depois que uma página em `/aprovacao/<slug>/` for aprovada pela
-produtora/cliente, ela é movida para `/produtos/<slug-definitivo>/`,
-com `robots` trocado para `index,follow`, hotlink de afiliado real
-configurado, e pode passar a aparecer na seção "Produtos anunciados" da
-home, se estiver em campanha ativa. Essa pasta ainda não existe neste
-repositório.
+Quando uma página em `/aprovacao/<slug>/` estiver pronta para tráfego
+(o que **não exige, por padrão, aprovação de uma produtora** — ver
+`docs/ADR_PRESELL_OWNERSHIP.md`), ela é movida para
+`/produtos/<slug-definitivo>/`, com `robots` trocado para
+`index,follow`, hotlink de afiliado real configurado, e pode passar a
+aparecer na seção "Produtos anunciados" da home, se estiver em
+campanha ativa. Essa pasta ainda não existe neste repositório.
 
 ## Páginas atuais
 
 | Caminho | Produto | Status |
 |---|---|---|
-| `/aprovacao/100-aplicativos-uteis/` | "+100 Aplicativos Úteis para Produtividade Empreendedora" (Hotmart) | Rascunho — hotlink de afiliado já configurado; aguardando data de verificação e aprovação da produtora |
+| `/aprovacao/100-aplicativos-uteis/` | "+100 Aplicativos Úteis para Produtividade Empreendedora" (Hotmart) | Rascunho — hotlink de afiliado já configurado; aguardando data de verificação de preço/garantia |
+| `/aprovacao/fotografia-presets-lightroom/` | "10 Dicas de Fotografia + 18 Presets de Lightroom" (Hotmart) | `CANDIDATA_APROVADA_TECNICAMENTE` — migrada do PR #51 de `afiliados-mega-lab` (ver `docs/etapa_3_a_v1_migracao_presell_trevo.md`); hotlink de afiliado configurado; sem validação real de fluxo externo/clique ainda |
 
 ### `/aprovacao/100-aplicativos-uteis/` — HTML+CSS estático, zero JavaScript
 
@@ -116,10 +120,20 @@ isso fica a cargo de quem revisar as mudanças localmente.
 
 ## Documentação
 
+- `docs/ADR_PRESELL_OWNERSHIP.md` — decisão arquitetural: este
+  repositório é o proprietário das pre-sells públicas, papel do
+  repositório `afiliados-mega-lab`, GitHub Pages como hospedagem
+  atual, e a regra sobre quando contato com produtora é (ou não)
+  necessário. **Leia antes de implementar qualquer pre-sell/landing.**
+- `CLAUDE.md` / `AGENTS.md` — resumo das regras acima para agentes de
+  código, apontando para o ADR.
 - `docs/auditoria_100_aplicativos_uteis.md` — auditoria de
   pré-publicação da landing "+100 Aplicativos Úteis" (clareza, conversão,
   confiança, compliance, SEO, acessibilidade, performance,
   compatibilidade, publicação, risco de aprovação).
+- `docs/etapa_3_a_v1_migracao_presell_trevo.md` — migração da pre-sell
+  "10 Dicas de Fotografia + 18 Presets de Lightroom" do PR #51 de
+  `afiliados-mega-lab` para este repositório.
 - `aprovacao/README.md` — convenção da área de revisão (não é servido
   como página pública).
 - `aprovacao/100-aplicativos-uteis/README.md` e `docs/` — documentação
