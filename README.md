@@ -21,16 +21,30 @@ index.html, styles.css, assets/          # site institucional (estático, sem bu
 404.html, robots.txt
 politica-de-privacidade.html, termos-de-uso.html
 docs/                                     # documentação/relatórios do repositório
-aprovacao/                                # páginas em revisão controlada, opcional (ver aprovacao/README.md)
+aprovacao/                                # caso histórico/excepcional (ver aprovacao/README.md) — não é mais o fluxo padrão
   index.html                              # mensagem genérica — NÃO lista páginas
-  100-aplicativos-uteis/                  # uma página específica em revisão
+  100-aplicativos-uteis/                  # página histórica ainda em revisão
     index.html, styles.css, fonts/        # HTML+CSS estático, sem build, zero JavaScript
     favicon.svg, og-image.svg
     docs/                                 # compliance e decisão de arquitetura da página
+produtos/                                 # pre-sells de produção (fluxo padrão a partir desta etapa)
   fotografia-presets-lightroom/           # migrada de afiliados-mega-lab PR #51
     index.html, styles.css, assets/       # HTML+CSS estático, sem build, zero JavaScript
-produtos/                                 # (ainda não existe) páginas já aprovadas/públicas
 ```
+
+## Regra de publicação — páginas nascem como produção
+
+A partir desta etapa, novas pre-sells/landing pages são implementadas
+**diretamente como artefatos de produção**, em `/produtos/<slug>/`,
+com metadata real (`index,follow`, canonical final) desde o primeiro
+commit. O estado de desenvolvimento (rascunho, QA, revisão, "aguardando
+aprovação") pertence a **git/branches/PRs**, nunca ao HTML servido ao
+visitante. Uma página pública não deve conter rascunho, placeholder,
+nota de QA interno, TODO/FIXME, referência a `docs/` internos, ou
+qualquer outro sinal de estado de desenvolvimento. Ver
+`docs/ADR_PRESELL_OWNERSHIP.md` para a regra completa e para a exceção
+histórica (`/aprovacao/100-aplicativos-uteis/`, criada antes desta
+regra existir).
 
 ## Site institucional (raiz)
 
@@ -42,13 +56,16 @@ que nenhum produto está sendo anunciado publicamente, e uma orientação
 discreta para produtoras que tenham recebido um link de revisão por
 e-mail.
 
-## `/aprovacao/` — páginas em revisão, sem listagem pública
+## `/aprovacao/` — caso histórico/excepcional, sem listagem pública
 
+**Não é mais o fluxo padrão para novas pre-sells** (ver regra de
+publicação acima). A pasta continua existindo para a página histórica
+`100-aplicativos-uteis/`, criada antes desta regra.
 `/aprovacao/index.html` mostra apenas uma mensagem genérica — **nunca**
-liste produtos, produtoras ou slugs de páginas em revisão ali, na home
-do site, ou em qualquer menu público. Cada página em revisão fica em
+liste produtos, produtoras ou slugs ali, na home do site, ou em
+qualquer menu público. Cada página nessa pasta fica em
 `/aprovacao/<slug-específico>/`, com `noindex,nofollow`, sem link
-público, e é compartilhada apenas por e-mail com quem precisa aprovar.
+público, e é compartilhada apenas por e-mail com quem precisa revisar.
 
 **Importante:** isso não é autenticação real. O repositório é público e
 GitHub Pages é hospedagem estática sem backend — qualquer pessoa com a
@@ -56,22 +73,20 @@ URL exata acessa a página. A proteção é apenas contra indexação por
 buscadores e descoberta casual. Ver `aprovacao/README.md` para o
 detalhamento completo dessa ressalva.
 
-## `/produtos/` — páginas aprovadas e públicas (futuro)
+## `/produtos/` — pre-sells de produção (fluxo padrão)
 
-Quando uma página em `/aprovacao/<slug>/` estiver pronta para tráfego
-(o que **não exige, por padrão, aprovação de uma produtora** — ver
-`docs/ADR_PRESELL_OWNERSHIP.md`), ela é movida para
-`/produtos/<slug-definitivo>/`, com `robots` trocado para
-`index,follow`, hotlink de afiliado real configurado, e pode passar a
-aparecer na seção "Produtos anunciados" da home, se estiver em
-campanha ativa. Essa pasta ainda não existe neste repositório.
+Pre-sells novas são criadas diretamente aqui, em
+`/produtos/<slug>/`, com `robots: index,follow`, canonical final e
+hotlink de afiliado real desde o primeiro commit. Podem passar a
+aparecer na seção "Produtos anunciados" da home quando estiverem em
+campanha ativa.
 
 ## Páginas atuais
 
 | Caminho | Produto | Status |
 |---|---|---|
-| `/aprovacao/100-aplicativos-uteis/` | "+100 Aplicativos Úteis para Produtividade Empreendedora" (Hotmart) | Rascunho — hotlink de afiliado já configurado; aguardando data de verificação de preço/garantia |
-| `/aprovacao/fotografia-presets-lightroom/` | "10 Dicas de Fotografia + 18 Presets de Lightroom" (Hotmart) | `CANDIDATA_APROVADA_TECNICAMENTE` — migrada do PR #51 de `afiliados-mega-lab` (ver `docs/etapa_3_a_v1_migracao_presell_trevo.md`); hotlink de afiliado configurado; sem validação real de fluxo externo/clique ainda |
+| `/aprovacao/100-aplicativos-uteis/` | "+100 Aplicativos Úteis para Produtividade Empreendedora" (Hotmart) | Caso histórico, anterior à regra de publicação — hotlink de afiliado já configurado; aguardando data de verificação de preço/garantia |
+| `/produtos/fotografia-presets-lightroom/` | "10 Dicas de Fotografia + 18 Presets de Lightroom" (Hotmart) | Página de produção — migrada do PR #51 de `afiliados-mega-lab` (ver `docs/etapa_3_a_v1_migracao_presell_trevo.md`); hotlink de afiliado configurado; `index,follow`; sem merge do PR #1 ainda (revisão humana pendente) |
 
 ### `/aprovacao/100-aplicativos-uteis/` — HTML+CSS estático, zero JavaScript
 
@@ -111,9 +126,10 @@ de carregar o script (a página não usa cookies hoje).
    `/ (root)`. Isso já publica tudo neste repositório na raiz de
    `https://trevodigitalconversoes.github.io/` — sem nome de
    repositório na URL.
-2. As páginas em `/aprovacao/` são HTML/CSS estático — para "rebuildar",
-   basta editar `index.html`/`styles.css` diretamente e commitar. Não há
-   passo de build/compilação nesta fase.
+2. As páginas em `/aprovacao/` e `/produtos/` são HTML/CSS estático —
+   para "rebuildar", basta editar `index.html`/`styles.css`
+   diretamente e commitar. Não há passo de build/compilação nesta
+   fase.
 
 Este projeto/documentação **não faz commit nem push automaticamente** —
 isso fica a cargo de quem revisar as mudanças localmente.
@@ -133,7 +149,11 @@ isso fica a cargo de quem revisar as mudanças localmente.
   compatibilidade, publicação, risco de aprovação).
 - `docs/etapa_3_a_v1_migracao_presell_trevo.md` — migração da pre-sell
   "10 Dicas de Fotografia + 18 Presets de Lightroom" do PR #51 de
-  `afiliados-mega-lab` para este repositório.
+  `afiliados-mega-lab` para este repositório, incluindo a correção de
+  caminho para `/produtos/`.
+- `docs/etapa_3_b_v1_plano_tracking_nivel_0.md` — investigação e plano
+  (sem implementação) de tracking mínimo para as pre-sells de
+  produção.
 - `aprovacao/README.md` — convenção da área de revisão (não é servido
   como página pública).
 - `aprovacao/100-aplicativos-uteis/README.md` e `docs/` — documentação

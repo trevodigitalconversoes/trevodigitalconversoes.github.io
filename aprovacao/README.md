@@ -1,4 +1,4 @@
-# ⚠ `/aprovacao/` — revisão controlada, opcional (não é um índice público)
+# ⚠ `/aprovacao/` — caso histórico/excepcional (não é um índice público)
 
 Este arquivo é documentação para quem mantém o repositório — **não é
 servido como página**. O que os visitantes veem em
@@ -6,13 +6,20 @@ servido como página**. O que os visitantes veem em
 nesta mesma pasta: uma mensagem genérica, sem listar nenhuma página,
 produto ou produtora.
 
-**Esta pasta é uma área opcional de revisão controlada** — inclusive
-para QA interno, sem envolver terceiros. Uma página estar em
-`/aprovacao/<slug>/` **não implica** que ela foi ou será enviada a uma
-produtora para aprovação; significa apenas que ainda não foi movida
-para `/produtos/` (publicação com `index,follow`). Ver
-`docs/ADR_PRESELL_OWNERSHIP.md` para a regra completa sobre quando
-contato com a produtora é (ou não) necessário.
+**Esta pasta não é mais o fluxo padrão para novas pre-sells.** A
+partir da etapa registrada em
+`docs/etapa_3_a_v1_migracao_presell_trevo.md`, novas páginas nascem
+diretamente em `/produtos/<slug>/`, como artefatos de produção
+(`index,follow`, canonical final desde o primeiro commit) — o estado
+de desenvolvimento fica em git/branches/PR, não no HTML público. Ver
+`docs/ADR_PRESELL_OWNERSHIP.md`, seção "Regra de publicação".
+
+`/aprovacao/` continua existindo apenas para casos históricos ou
+excepcionais (hoje, só `100-aplicativos-uteis/`, criada antes desta
+regra). Uma página aqui **não implica** que foi ou será enviada a uma
+produtora para aprovação — contato com produtora segue a mesma regra
+de sempre: só quando uma exigência explícita determinar (ver
+`docs/ADR_PRESELL_OWNERSHIP.md`).
 
 ## Convenção
 
@@ -44,7 +51,11 @@ Se um controle de acesso de verdade for necessário no futuro, isso
 exige um backend/autenticação, o que está fora do escopo de GitHub
 Pages puro.
 
-## Quando mover uma página para `/produtos/`
+## Quando mover uma página histórica para `/produtos/`
+
+Esta seção se aplica ao caso excepcional de uma página que ainda vive
+em `/aprovacao/` (fluxo antigo). Novas pre-sells não passam por aqui —
+nascem direto em `/produtos/`.
 
 Não existe uma exigência geral de aprovação da produtora antes de
 publicar. Contato com a produtora só é necessário quando uma regra

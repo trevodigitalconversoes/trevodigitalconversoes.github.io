@@ -31,3 +31,10 @@ prevalece.
    justificado)**. Não introduza um framework/build (Next.js, Vite,
    React etc.) no repositório inteiro só para reaproveitar um
    protótipo de outro lugar.
+9. **Páginas nascem como produção.** Novas pre-sells vão direto para
+   `/produtos/<slug>/`, com `index,follow` e canonical final desde o
+   primeiro commit. `/aprovacao/` não é mais o fluxo padrão — só existe
+   por exceção histórica. Nunca deixe rascunho, placeholder, nota de
+   QA, TODO/FIXME, referência a `docs/` internos ou estado de
+   aprovação visível no HTML público (nem em comentários HTML). O
+   estado de desenvolvimento fica em git/branch/PR, não na página.
