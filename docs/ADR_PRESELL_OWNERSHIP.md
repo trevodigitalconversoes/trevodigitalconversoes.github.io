@@ -12,6 +12,12 @@
   `noindex,nofollow` e mensagens de estado de revisão/QA visíveis no
   HTML público. Essa não é mais a regra: ver "Regra de publicação —
   páginas nascem como produção" abaixo.
+- **Contexto da atualização (catálogo, mesmo dia):** a home ainda
+  afirmava "nenhum produto está sendo anunciado publicamente" e
+  mencionava um fluxo de "link de revisão" enviado por e-mail, e
+  `/produtos/` não tinha `index.html` próprio (o servidor expunha
+  listagem de diretório). Corrigido: ver "`/produtos/` é o catálogo
+  público" abaixo.
 
 ## Decisão
 
@@ -105,6 +111,36 @@ production-first: publicar direto em `/produtos/` sem passar por
 `/aprovacao/` **não é**, por si só, uma exigência de aprovação nova —
 é a mesma ausência de exigência de sempre, aplicada de forma
 consistente.
+
+## `/produtos/` é o catálogo público
+
+Uma página em `/produtos/<slug>/` destinada a produção deve ser
+**descoberível pelo site**, não apenas acessível por URL direta:
+
+- `/produtos/` é o **catálogo público** de produtos anunciados —
+  tem seu próprio `produtos/index.html` (identidade visual do site,
+  header/nav/footer consistentes), nunca listagem de diretório do
+  servidor.
+- A home (seção "Produtos anunciados") apresenta um card institucional
+  de cada produto de produção existente e um link para o catálogo
+  completo.
+- Um card de produto (na home ou no catálogo) contém apenas dados
+  factuais/aprovados (imagem oficial, título oficial, descrição
+  reaproveitada ou reduzida de forma neutra a partir da copy já
+  aprovada) e um link **interno** para a página do produto — nunca o
+  hotlink de afiliado diretamente no card. O fluxo é sempre
+  `home/catálogo → página do produto → Hotmart`.
+- **Presença no catálogo não significa que uma campanha paga está
+  ativa.** Uma página em `/produtos/<slug>/` pode estar publicada e
+  descobrível (production-ready) antes da primeira campanha de tráfego
+  pago começar — são decisões independentes. Não confundir "produto
+  publicado/divulgável" com "campanha paga ativa" em nenhuma
+  documentação ou comunicação.
+- A home não deve reafirmar "nenhum produto anunciado" nem mencionar
+  fluxo de link de revisão por e-mail quando já existir ao menos um
+  produto de produção publicado — isso contradiz a regra de
+  publicação acima (a página já é um artefato de produção assim que
+  existe em `/produtos/`).
 
 ## Regras derivadas
 

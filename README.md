@@ -27,7 +27,8 @@ aprovacao/                                # caso histórico/excepcional (ver apr
     index.html, styles.css, fonts/        # HTML+CSS estático, sem build, zero JavaScript
     favicon.svg, og-image.svg
     docs/                                 # compliance e decisão de arquitetura da página
-produtos/                                 # pre-sells de produção (fluxo padrão a partir desta etapa)
+produtos/                                 # catálogo público + pre-sells de produção
+  index.html                              # catálogo: grid de produtos anunciados
   fotografia-presets-lightroom/           # migrada de afiliados-mega-lab PR #51
     index.html, styles.css, assets/       # HTML+CSS estático, sem build, zero JavaScript
 ```
@@ -51,10 +52,10 @@ regra existir).
 `index.html`, `styles.css` e `assets/` são um site estático simples
 (sem framework, sem build), com todos os caminhos relativos — funciona
 como site raiz da organização sem qualquer configuração extra de base
-path. Inclui uma seção "Produtos anunciados" que, por enquanto, informa
-que nenhum produto está sendo anunciado publicamente, e uma orientação
-discreta para produtoras que tenham recebido um link de revisão por
-e-mail.
+path. Inclui uma seção "Produtos anunciados" com um card institucional
+por produto de produção existente (imagem, título e descrição
+factual/reaproveitada da copy já aprovada, nunca o hotlink diretamente
+no card) e um link para o catálogo completo em `/produtos/`.
 
 ## `/aprovacao/` — caso histórico/excepcional, sem listagem pública
 
@@ -73,20 +74,29 @@ URL exata acessa a página. A proteção é apenas contra indexação por
 buscadores e descoberta casual. Ver `aprovacao/README.md` para o
 detalhamento completo dessa ressalva.
 
-## `/produtos/` — pre-sells de produção (fluxo padrão)
+## `/produtos/` — catálogo público + pre-sells de produção (fluxo padrão)
 
-Pre-sells novas são criadas diretamente aqui, em
-`/produtos/<slug>/`, com `robots: index,follow`, canonical final e
-hotlink de afiliado real desde o primeiro commit. Podem passar a
-aparecer na seção "Produtos anunciados" da home quando estiverem em
-campanha ativa.
+`/produtos/index.html` é o **catálogo público**: página própria, com a
+identidade visual do site (header/nav/footer consistentes), grid de
+cards (mesmo padrão da seção "Produtos anunciados" da home) e link
+para cada produto — **nunca** listagem de diretório do servidor.
+
+Pre-sells novas são criadas diretamente em `/produtos/<slug>/`, com
+`robots: index,follow`, canonical final e hotlink de afiliado real
+desde o primeiro commit. Todo produto de produção deve aparecer tanto
+no catálogo quanto na seção "Produtos anunciados" da home.
+
+**Presença no catálogo não implica campanha paga ativa** — são
+decisões independentes (ver `docs/ADR_PRESELL_OWNERSHIP.md`, seção
+"`/produtos/` é o catálogo público").
 
 ## Páginas atuais
 
 | Caminho | Produto | Status |
 |---|---|---|
 | `/aprovacao/100-aplicativos-uteis/` | "+100 Aplicativos Úteis para Produtividade Empreendedora" (Hotmart) | Caso histórico, anterior à regra de publicação — hotlink de afiliado já configurado; aguardando data de verificação de preço/garantia |
-| `/produtos/fotografia-presets-lightroom/` | "10 Dicas de Fotografia + 18 Presets de Lightroom" (Hotmart) | Página de produção — migrada do PR #51 de `afiliados-mega-lab` (ver `docs/etapa_3_a_v1_migracao_presell_trevo.md`); hotlink de afiliado configurado; `index,follow`; sem merge do PR #1 ainda (revisão humana pendente) |
+| `/produtos/` | Catálogo público (sem produto próprio) | Lista os produtos de produção existentes |
+| `/produtos/fotografia-presets-lightroom/` | "10 Dicas de Fotografia + 18 Presets de Lightroom" (Hotmart) | Página de produção — migrada do PR #51 de `afiliados-mega-lab` (ver `docs/etapa_3_a_v1_migracao_presell_trevo.md`); hotlink de afiliado configurado; `index,follow`; listada na home e no catálogo; sem merge do PR #1 ainda (revisão humana pendente) |
 
 ### `/aprovacao/100-aplicativos-uteis/` — HTML+CSS estático, zero JavaScript
 

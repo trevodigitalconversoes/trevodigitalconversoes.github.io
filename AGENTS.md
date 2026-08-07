@@ -38,3 +38,9 @@ prevalece.
    QA, TODO/FIXME, referência a `docs/` internos ou estado de
    aprovação visível no HTML público (nem em comentários HTML). O
    estado de desenvolvimento fica em git/branch/PR, não na página.
+10. **`/produtos/` é o catálogo público**, com seu próprio
+    `produtos/index.html` (nunca listagem de diretório). Todo produto
+    de produção deve aparecer lá e na home, com card factual e link
+    interno para a página do produto — nunca o hotlink diretamente no
+    card. Presença no catálogo **não** significa campanha paga ativa;
+    não confunda as duas coisas em código ou documentação.
