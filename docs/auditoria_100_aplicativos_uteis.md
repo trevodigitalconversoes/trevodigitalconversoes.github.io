@@ -1,7 +1,15 @@
 # Auditoria de pré-publicação — "+100 Aplicativos Úteis para Produtividade Empreendedora"
 
-Página avaliada: `aprovacao/100-aplicativos-uteis/index.html`
-URL final: `https://trevodigitalconversoes.github.io/aprovacao/100-aplicativos-uteis/`
+> **Nota (2026-08-07):** relatório histórico. Na data da auditoria a
+> página vivia em `/aprovacao/100-aplicativos-uteis/`; essa pasta foi
+> removida e a página foi promovida para
+> `/produtos/100-aplicativos-uteis/` — ver
+> `docs/etapa_3_c_v1_remocao_aprovacao_promocao_100_apps.md`. As
+> observações abaixo (estrutura, copy, compliance) continuam válidas;
+> só o caminho/URL mudou.
+
+Página avaliada (na data desta auditoria): `aprovacao/100-aplicativos-uteis/index.html`
+URL final (atual): `https://trevodigitalconversoes.github.io/produtos/100-aplicativos-uteis/`
 Data da auditoria: 2026-07-04
 
 ## 1. Clareza da proposta

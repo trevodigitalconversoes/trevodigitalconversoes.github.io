@@ -18,6 +18,15 @@
   `/produtos/` não tinha `index.html` próprio (o servidor expunha
   listagem de diretório). Corrigido: ver "`/produtos/` é o catálogo
   público" abaixo.
+- **Contexto da atualização (remoção de `/aprovacao/`, mesmo dia):** a
+  pasta `/aprovacao/` foi **removida completamente** do repositório em
+  2026-08-07. A única página que ainda vivia lá
+  (`100-aplicativos-uteis/`) foi promovida a
+  `/produtos/100-aplicativos-uteis/`, com metadata de produção e
+  fatos comerciais revalidados. `/produtos/` passa a ser o **único**
+  namespace público de pre-sells/produtos deste repositório. Ver
+  "`/aprovacao/` foi removido" abaixo (substitui a seção anterior, que
+  tratava a pasta como "exceção histórica ainda existente").
 
 ## Decisão
 
@@ -90,15 +99,30 @@ Isso vale tanto para texto visível quanto para comentários HTML
 (`<!-- ... -->`) — comentários em uma página pública ainda são
 publicados e legíveis por qualquer visitante que veja o código-fonte.
 
-### `/aprovacao/`
+### `/aprovacao/` foi removido
 
-**Não é mais o fluxo padrão para novas pre-sells.** A pasta continua
-existindo apenas para o caso histórico já publicado antes desta regra
-(`100-aplicativos-uteis/`) e para eventuais casos excepcionais
-futuros, que devem ser documentados explicitamente como exceção (ex.:
-um comentário nesta seção ou uma nova entrada na tabela de páginas do
-`README.md`) — não é mais assumida como o destino padrão de uma nova
-implementação.
+`/aprovacao/` **foi removido completamente deste repositório em
+2026-08-07** — não existe mais como pasta, rota ou fluxo. Não há
+"exceção histórica ativa": a única página que ainda vivia lá
+(`100-aplicativos-uteis/`) foi promovida para
+`/produtos/100-aplicativos-uteis/` na mesma etapa (ver
+`docs/etapa_3_c_v1_remocao_aprovacao_promocao_100_apps.md`).
+
+**`/produtos/` é o único namespace público de pre-sells/produtos**
+deste repositório. Não existe mais um fluxo público de aprovação,
+revisão, rascunho, staging, ou "link privado por obscuridade". Revisão
+técnica acontece inteiramente em
+`branch → PR → ambiente local → QA → revisão humana → merge`.
+
+Agentes de código **nunca devem recriar `/aprovacao/`** (nem essa
+pasta específica, nem um padrão equivalente de "área de revisão
+pública separada da produção"). Se um caso realmente excepcional exigir
+algo assim no futuro, isso exige uma ADR nova e explícita — não uma
+decisão silenciosa durante a implementação.
+
+Documentos históricos (ex.: `docs/etapa_3_a_v1_migracao_presell_trevo.md`)
+podem mencionar `/aprovacao/` ao narrar o que aconteceu naquela etapa —
+isso é registro de passado, não instrução de uso atual.
 
 ### Contato com produtor
 
@@ -106,11 +130,9 @@ Mantém-se a regra já decidida na versão original deste ADR: **não
 solicitar aprovação nem contato com a produtora por padrão.** Contato
 só ocorre quando regra oficial do produto, da Hotmart, da plataforma
 de anúncios, contrato ou legislação aplicável exigir — ver regra 5 em
-"Regras derivadas" abaixo. Essa regra não muda com a adoção do fluxo
-production-first: publicar direto em `/produtos/` sem passar por
-`/aprovacao/` **não é**, por si só, uma exigência de aprovação nova —
-é a mesma ausência de exigência de sempre, aplicada de forma
-consistente.
+"Regras derivadas" abaixo. Essa regra nunca dependeu da existência de
+`/aprovacao/` — publicar direto em `/produtos/` não é, por si só, uma
+exigência de aprovação nova.
 
 ## `/produtos/` é o catálogo público
 
@@ -160,9 +182,9 @@ Uma página em `/produtos/<slug>/` destinada a produção deve ser
    PR #51), a copy do Figma aprovado e/ou da fonte comercial aprovada
    deve ser preservada literalmente na migração — não "melhorada" por
    iniciativa própria do agente.
-5. **Contato com a produtora não é uma exigência automática.** A
-   existência da pasta `/aprovacao/` **não cria** uma obrigação geral
-   de contatar, autorizar ou aguardar aprovação da produtora antes de
+5. **Contato com a produtora não é uma exigência automática.** Nenhuma
+   página pública deste repositório cria uma obrigação geral de
+   contatar, autorizar ou aguardar aprovação da produtora antes de
    qualquer publicação. Contato com a produtora só é necessário quando
    uma das fontes abaixo exigir explicitamente:
    - regra explícita do próprio produto/produtora;
@@ -174,10 +196,9 @@ Uma página em `/produtos/<slug>/` destinada a produção deve ser
 
    A ausência de uma dessas exigências **não significa ausência de
    compliance** — ela apenas significa que o envio à produtora não é
-   um passo obrigatório do fluxo padrão. `/aprovacao/` é uma área
-   **opcional** de revisão controlada (inclusive para QA interno),
-   não um portão de aprovação de terceiros por padrão. Ver
-   `aprovacao/README.md` para a convenção operacional dessa pasta.
+   um passo obrigatório do fluxo padrão. Revisão técnica (QA, testes,
+   validação) acontece em branch/PR/ambiente local — nunca precisou de
+   uma área pública de revisão para isso, e não precisa agora.
 6. **Agentes de código não assumem autoria comercial.** Um agente que
    implementa uma página não é a produtora do conteúdo, não decide
    preço/garantia/comissão, e não deve inventar claims (depoimentos,
@@ -195,9 +216,8 @@ Uma página em `/produtos/<slug>/` destinada a produção deve ser
 ## Consequências
 
 - Toda pre-sell/landing pública do portfólio de afiliados vive neste
-  repositório, em `/produtos/<slug>/` (fluxo padrão, produção) ou,
-  excepcionalmente, em `/aprovacao/<slug>/` (caso histórico/exceção
-  documentada) — nunca em `afiliados-mega-lab`.
+  repositório, exclusivamente em `/produtos/<slug>/` — nunca em
+  `afiliados-mega-lab`, e nunca em `/aprovacao/` (removido).
 - O AML permanece livre para experimentar arquiteturas
   (Next.js, route groups, etc.) para fins de prototipagem, mas esse
   código não é o artefato de publicação — ele é fonte de referência a
@@ -216,5 +236,6 @@ Uma página em `/produtos/<slug>/` destinada a produção deve ser
   `/produtos/fotografia-presets-lightroom/`).
 - Plano de tracking (investigação, sem implementação):
   `docs/etapa_3_b_v1_plano_tracking_nivel_0.md`.
-- `aprovacao/README.md` — convenção da área de revisão.
+- Remoção de `/aprovacao/` e promoção de "+100 Aplicativos Úteis":
+  `docs/etapa_3_c_v1_remocao_aprovacao_promocao_100_apps.md`.
 - `README.md` — estrutura geral do repositório e deploy.
