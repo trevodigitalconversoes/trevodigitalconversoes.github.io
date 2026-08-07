@@ -9,6 +9,53 @@
   páginas públicas. Ver `docs/ADR_PRESELL_OWNERSHIP.md` para a decisão
   arquitetural completa.
 
+## Correção 3A-v2 — caminho final e regra production-first
+
+A primeira versão desta migração (seções abaixo, preservadas como
+registro histórico) colocou a página em `/aprovacao/`, com
+`noindex,nofollow` e textos de estado de revisão/QA visíveis no HTML
+público. Isso contrariava a regra (adotada logo em seguida) de que
+pre-sells nascem diretamente como artefatos de produção — o estado de
+desenvolvimento pertence a git/branch/PR, não ao HTML servido ao
+visitante. Ver `docs/ADR_PRESELL_OWNERSHIP.md`, seção "Regra de
+publicação — páginas nascem como produção".
+
+Nesta correção (mesma branch, mesmo PR #1):
+
+- A página foi movida de `/aprovacao/fotografia-presets-lightroom/`
+  para **`/produtos/fotografia-presets-lightroom/`** (`git mv`,
+  conteúdo preservado).
+- `canonical`, Open Graph e Twitter Card atualizados para a nova URL:
+  `https://trevodigitalconversoes.github.io/produtos/fotografia-presets-lightroom/`.
+- `<meta name="robots">` trocado de `noindex,nofollow` para
+  **`index,follow`** (não havia impedimento técnico ou de política
+  real para indexação — a página já preserva toda a copy aprovada,
+  disclosure de afiliado, e passou no QA completo).
+- Removido do HTML público (Política de Privacidade):
+  *"Se alguma ferramenta de medição for adicionada no futuro, esta
+  política deverá ser atualizada antes da publicação."* — nota
+  operacional interna, não conteúdo para o visitante.
+- Removido do rodapé: *"Página em revisão interna (QA), sem aprovação
+  para tráfego pago ainda. Ver
+  `docs/etapa_3_a_v1_migracao_presell_trevo.md`."* — nenhum substituto
+  de mesma natureza foi criado.
+- O link de contato, que antes exibia a URL crua
+  (`trevodigitalconversoes.github.io/#contato`) como texto, agora usa
+  um rótulo de interface (*"Entrar em contato com o Trevo Digital
+  Conversões"*), com classe própria (`.contact-link`) — mesmo destino
+  (`https://trevodigitalconversoes.github.io/#contato`, âncora real e
+  já existente na home).
+- Nenhuma mudança na copy comercial (headline, argumentos, seções,
+  CTAs) — só remoção de notas internas e ajuste do componente de
+  contato, conforme escopo autorizado desta correção.
+
+As seções abaixo (Origem, o que foi reaproveitado, hashes, QA, etc.)
+descrevem a migração original; onde mencionam `/aprovacao/`, o
+caminho vigente agora é `/produtos/` (ver acima). Os hashes de assets,
+a copy preservada e as validações de QA continuam válidos — o QA foi
+re-executado no novo caminho (ver "Validações executadas — re-teste
+3A-v2" ao final deste documento).
+
 ## Origem
 
 - Repositório: `correa0inaiara/afiliados-mega-lab`.
@@ -130,6 +177,8 @@ de Privacidade da página — mesma regra já documentada no `README.md`
 raiz para a outra pre-sell.
 
 **Nível 0 de tracking permanece não concluído** (nem no-op, nem real).
+Investigação e plano (sem implementação) registrados em
+`docs/etapa_3_b_v1_plano_tracking_nivel_0.md`.
 
 ## Validações executadas
 
@@ -189,26 +238,57 @@ horizontal via JavaScript, não comparação pixel a pixel com o Figma.
   feita — permanece `CANDIDATA_APROVADA_TECNICAMENTE`.
 - Nenhum screenshot pixel a pixel foi gerado (limitação do Browser
   pane nesta sessão).
-- `robots: noindex,nofollow` aplicado — reversível quando a
-  publicação em `/produtos/` for decidida (não depende de aprovação de
-  produtora por padrão — ver `docs/ADR_PRESELL_OWNERSHIP.md`).
+- `robots: index,follow` já aplicado (correção 3A-v2) — mas o merge do
+  PR #1 ainda não aconteceu, então a página não está de fato acessível
+  em produção (`https://trevodigitalconversoes.github.io/`) até essa
+  revisão humana final.
+
+## Validações executadas — re-teste 3A-v2 (após mover para `/produtos/`)
+
+Mesmo método da rodada anterior (servidor estático local via
+`preview_start`, Browser pane), repetido no novo caminho
+`/produtos/fotografia-presets-lightroom/`:
+
+- [x] `robots` = `index,follow`; `canonical` e `og:url`/`twitter:image`
+      apontando para
+      `https://trevodigitalconversoes.github.io/produtos/fotografia-presets-lightroom/`.
+- [x] 0 erros no console do navegador.
+- [x] 5 assets oficiais servidos via `fetch()` direto, `200`, mesmos
+      tamanhos em bytes de sempre (`136973`, `164721`, `1559644`,
+      `2834618`, `1860823`).
+- [x] 2 CTAs — mesmo `href` (`https://go.hotmart.com/V106592210H`),
+      `target="_blank"`, `rel="noopener noreferrer sponsored"`, nunca
+      clicados.
+- [x] Link de contato: rótulo de interface ("Entrar em contato com o
+      Trevo Digital Conversões"), destino
+      `https://trevodigitalconversoes.github.io/#contato`; nenhuma
+      URL crua aparece como texto na página (`rawUrlText: false`).
+- [x] Sem overflow horizontal em 375px, 768px (753px nativo) e 1440px
+      (1425px nativo).
+- [x] 6/6 imagens com `alt`. Disclosure de afiliado presente
+      ("Transparência" + "indicação de afiliado").
+- [x] Busca automatizada no HTML renderizado por `rascunho`,
+      `revisão`/`revisao`, `QA`, `placeholder`, `TODO`, `FIXME`,
+      `docs/`, `aguardando aprovação`, `sem aprovação` — nenhuma
+      ocorrência real (único hit foi `"Todo"` dentro de "Todos os
+      direitos reservados", falso positivo revisado manualmente).
 
 ## Estado final do PR #51 (AML)
 
-Não mesclado. Após a abertura do PR correspondente neste repositório
-(Trevo), o PR #51 deve ser atualizado com um comentário registrando o
-link do novo PR e que a implementação foi *superseded*
-arquiteturalmente por esta migração — preservado como fonte histórica,
-sem merge no AML.
+Não mesclado. O PR #51 foi comentado com o link do PR #1 deste
+repositório e a nota de que a implementação canônica agora vive em
+`/produtos/fotografia-presets-lightroom/` — preservado como fonte
+histórica, sem merge no AML.
 
 ## Confirmações
 
 - Nenhuma compra, checkout, campanha, gasto ou clique real no hotlink
-  em nenhum momento desta migração.
-- Nenhum envio desta página para a produtora — permanece em
-  `/aprovacao/` como revisão/QA interna, o que não implica envio
-  externo (ver `docs/ADR_PRESELL_OWNERSHIP.md`).
-- Nenhuma alteração de DNS/produção.
+  em nenhum momento desta migração (nem na v1, nem na correção 3A-v2).
+- Nenhum envio desta página para a produtora em nenhum momento.
+- Nenhuma alteração de DNS/produção — a mudança de `/aprovacao/` para
+  `/produtos/` acontece dentro de uma branch/PR ainda **não
+  mesclado**; não há efeito em produção até um merge humano.
 - Nenhuma promessa/preço/garantia/escassez/depoimento/contador/
   autoridade inventados.
-- PR deste repositório aberto como **draft**, não mesclado.
+- PR deste repositório aberto como **draft**, não mesclado. Merge
+  aguarda revisão humana final.
