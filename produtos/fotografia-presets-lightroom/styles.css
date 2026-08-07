@@ -805,3 +805,15 @@ main {
 .small a {
   color: var(--presell-accent);
 }
+
+.contact-link {
+  color: var(--presell-accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.contact-link:hover,
+.contact-link:focus-visible {
+  text-decoration-thickness: 2px;
+}
