@@ -20,6 +20,21 @@ from .state import PublicationRecord, StateStore
 
 _LOCAL_HOSTS = {"localhost", "127.0.0.1", "0.0.0.0", "::1"}  # noqa: S104 (comparacao, nao bind)
 
+# Caracteres que nunca devem aparecer numa media_url real. Cobre o caso
+# classico de colar um link Markdown inteiro (`[texto](url)`) em vez da
+# URL pura, e barras invertidas (nunca validas em URL http(s) -- em
+# particular `raw\.githubusercontent.com` e um erro de digitacao onde
+# alguem tentou escapar o ponto como se estivesse escrevendo uma regex).
+_FORBIDDEN_URL_CHARS = ("[", "]", "(", ")", "\\")
+
+# Fragmentos que indicam que um objeto do PowerShell (ex.: $Host, que e
+# a variavel automatica somente-leitura do console, nao uma string) foi
+# serializado/interpolado por engano no lugar de uma URL de verdade.
+_POWERSHELL_OBJECT_MARKERS = (
+    "system.management.automation",
+    "internalhost",
+)
+
 
 class PublishNotConfirmedError(RuntimeError):
     """Levantado quando publish() e chamado sem as duas confirmacoes
@@ -32,16 +47,63 @@ class PublishBlockedError(RuntimeError):
     invalida, URL publica ausente, ja publicado, etc.)."""
 
 
-def _is_public_http_url(url: str | None) -> tuple[bool, str | None]:
-    if not url:
+def is_public_http_url(url: str | None) -> tuple[bool, str | None]:
+    """Valida que `url` e uma URL http(s) publica plausivel para a Meta
+    buscar via fetch. Rejeita explicitamente os erros de configuracao
+    mais comuns (link Markdown colado por engano, hostname com barra
+    invertida de um escape de regex mal aplicado, objeto do PowerShell
+    serializado, host local, string vazia/so espaco).
+
+    Retorna (ok, motivo_do_erro_ou_None). Nunca lanca excecao -- quem
+    chama decide o que fazer com o resultado (ver `prepare`/`publish`).
+    """
+    if url is None:
         return False, "media_url ausente no manifesto"
+
+    stripped = url.strip()
+    if not stripped:
+        return False, "media_url ausente ou em branco no manifesto"
+    if stripped != url:
+        return False, "media_url tem espaco em branco no inicio/fim -- provavel erro de copia/cola"
+
+    for bad_char in _FORBIDDEN_URL_CHARS:
+        if bad_char in url:
+            return False, (
+                f"media_url contem o caractere {bad_char!r}, inaceitavel numa URL "
+                "http(s) -- parece um link Markdown colado por engano "
+                "(`[texto](url)`) ou um escape de regex (`\\.`) aplicado a uma "
+                "URL literal. Use a URL pura, sem colchetes/parenteses/barra invertida."
+            )
+
+    lowered = url.lower()
+    for marker in _POWERSHELL_OBJECT_MARKERS:
+        if marker in lowered:
+            return False, (
+                f"media_url contem {marker!r}, que parece um objeto do PowerShell "
+                "(ex.: $Host, a variavel automatica somente-leitura do console) "
+                "serializado por engano no lugar de uma URL. Construa a URL como "
+                "string pura -- nunca use `$host`/`$Host` como nome de variavel, "
+                "esse nome e reservado pelo PowerShell."
+            )
+
     parts = urlsplit(url)
     if parts.scheme not in ("http", "https"):
         return False, f"media_url deve ser http(s), recebido esquema {parts.scheme!r}"
+
     hostname = (parts.hostname or "").lower()
+    if not hostname:
+        return False, "media_url sem hostname valido"
     if hostname in _LOCAL_HOSTS or hostname.endswith(".local"):
         return False, f"media_url aponta para host local ({hostname}) -- inaceitavel para publicacao real"
+    if "." not in hostname:
+        return False, f"hostname {hostname!r} nao parece um dominio valido (sem ponto)"
+
     return True, None
+
+
+# Alias retrocompativel -- codigo interno usava este nome antes da
+# validacao ser reforcada e exportada como API publica reutilizavel.
+_is_public_http_url = is_public_http_url
 
 
 @dataclass
