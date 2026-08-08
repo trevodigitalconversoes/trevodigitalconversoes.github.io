@@ -8,3 +8,10 @@ dist/
 
 # Configuração local de ferramenta (Claude Code) — não faz parte do site
 .claude/
+
+# tools/instagram/ — estado e saída de execução local, nunca commitados
+tools/instagram/.instagram-state/
+tools/instagram/.instagram-output/
+tools/instagram/**/__pycache__/
+tools/instagram/.pytest_cache/
+tools/instagram/**/*.pyc

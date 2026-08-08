@@ -1,8 +1,9 @@
 # Compliance — "+100 Aplicativos Úteis" (afiliado Hotmart)
 
 Checklist de regras obrigatórias e como cada uma é garantida no HTML
-estático publicado (`../index.html`, `../styles.css`). Revise este
-documento antes de aceitar qualquer alteração de copy.
+estático publicado em `produtos/100-aplicativos-uteis/index.html` e
+`produtos/100-aplicativos-uteis/styles.css` (raiz do repositório).
+Revise este documento antes de aceitar qualquer alteração de copy.
 
 > Este checklist foi adaptado para a versão atual da página, em HTML+CSS
 > estático, sem build e sem JavaScript — ver `decisao_migracao_html_estatico.md`.
@@ -56,17 +57,19 @@ fazer sentido"), e a seção de Valor + o FAQ reforçam explicitamente que
 ## Dados observados na Hotmart
 Preço, garantia e demais dados (seção "Informações observadas na
 Hotmart") são apresentados como "informações observadas", com nota final
-pedindo para conferir a página oficial antes de comprar. **Não há data de
-verificação preenchida** nesta versão — pendência documentada no README
-da página e no relatório final.
+pedindo para conferir a página oficial antes de comprar. Data de
+verificação preenchida: 07/08/2026, revalidada diretamente na página
+oficial do produto no marketplace da Hotmart (preço R$ 69,90, garantia
+7 dias, criadora Camila Silveira, 7 anos na plataforma — todos batendo
+com o que já estava publicado; "Acesso"/"Formato" não foram
+individualmente re-confirmados nesta revalidação e refletem a
+observação original).
 
 ## Robots / indexação
-`<meta name="robots" content="noindex,nofollow">` fixo no HTML, sem
-depender de nenhuma variável de build (não há mais build). Só deve virar
-`index,follow` manualmente, depois de: aprovação explícita da produtora
-e revisão final de conteúdo. O hotlink de afiliado já está configurado
-(ver seção abaixo) — isso não é mais uma pendência para a troca de
-`robots`.
+`<meta name="robots" content="index,follow">` — página de produção
+(promovida de `/aprovacao/` para `/produtos/` em 2026-08-07, ver
+`docs/ADR_PRESELL_OWNERSHIP.md`). O hotlink de afiliado já está
+configurado (ver seção abaixo).
 
 ## CTA da Hotmart — hotlink de afiliado configurado
 O botão "Ver produto na Hotmart" (hero e CTA final) usa o link otimizado
@@ -88,10 +91,11 @@ rastreamento de afiliado (gera comissão em compras via esse link) —
 2. Confirmar na Hotmart e no Google Ads se esse é o formato de link
    recomendado para a campanha (o parâmetro `redirectionUrl` foi gerado
    como link otimizado para Ads).
-3. Preencher a data real de verificação de preço/garantia
-   (`[INSERIR_DATA_DE_VERIFICACAO]` na seção "Informações observadas na
-   Hotmart").
-4. Obter aprovação explícita da produtora sobre o conteúdo.
+
+Contato com a produtora não é uma exigência automática — só é
+necessário se uma regra explícita (produto, Hotmart, plataforma de
+anúncios, contrato ou lei) exigir, ver
+`docs/ADR_PRESELL_OWNERSHIP.md`.
 
 ## Acessibilidade (resumo)
 - Link "Pular para o conteúdo" (`.skip-link`).
@@ -114,10 +118,12 @@ rastreamento de afiliado (gera comissão em compras via esse link) —
 
 ## Política de Privacidade e Contato
 - A Política de Privacidade não menciona nenhuma ferramenta de medição de
-  audiência: a página não usa analytics/pixels/cookies no momento. O
-  texto deixa explícito que, se alguma ferramenta de rastreamento for
-  adicionada no futuro, esta política deve ser atualizada antes da
-  publicação.
+  audiência: a página não usa analytics/pixels/cookies no momento. (A
+  nota interna sobre atualizar a política "antes da publicação" foi
+  removida do HTML público em 2026-08-07 — é uma nota operacional, não
+  conteúdo para o visitante; se uma ferramenta de rastreamento for
+  adicionada no futuro, a política deve ser atualizada como parte
+  dessa mudança, sem precisar reafirmar isso na própria página.)
 - O bloco de Contato deixa claro que dúvidas sobre produto, compra,
   pagamento, acesso ou garantia são sempre com a Hotmart. Para dúvidas
   sobre esta página, aponta para o canal público do Trevo Digital

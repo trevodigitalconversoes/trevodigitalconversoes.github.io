@@ -29,9 +29,9 @@ mudou.
 ## Pendências (não relacionadas à arquitetura)
 
 A pendência de hotlink de afiliado real já foi resolvida — os dois CTAs
-usam o link de afiliado otimizado para Google Ads. Restam:
-
-1. Data de verificação de preço/garantia na Hotmart.
-2. Aprovação explícita da produtora sobre o conteúdo.
-3. Troca futura de `noindex,nofollow` para `index,follow` — só depois de
-   1–2 estarem resolvidos.
+usam o link de afiliado otimizado para Google Ads. Em 2026-08-07, a
+página foi promovida a `/produtos/100-aplicativos-uteis/` com
+`robots: index,follow`, data de verificação preenchida (07/08/2026,
+fatos revalidados na Hotmart) e sem exigência de aprovação de
+produtora (ver `docs/ADR_PRESELL_OWNERSHIP.md`). Nenhuma pendência de
+arquitetura permanece.

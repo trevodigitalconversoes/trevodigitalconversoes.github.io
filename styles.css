@@ -17,6 +17,16 @@
 
 html {
   scroll-behavior: smooth;
+  /*
+   * Correcao sistemica para textos sem espacos (e-mails, URLs
+   * longas): sem isso, um token unico mais largo que o container
+   * (ex.: um endereco de e-mail em telas ~320-375px) causa overflow
+   * horizontal em vez de quebrar. overflow-wrap: anywhere so entra
+   * em acao quando a palavra realmente nao cabe -- nao afeta a
+   * quebra normal de texto com espacos, nao reduz fonte, nao esconde
+   * conteudo, sem ellipsis.
+   */
+  overflow-wrap: anywhere;
 }
 
 body {
@@ -291,6 +301,66 @@ h3 {
   background: var(--panel-strong);
 }
 
+.product-grid {
+  max-width: 1160px;
+  margin: 34px auto 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.product-card-image {
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.product-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.product-card-body {
+  padding: 24px;
+}
+
+.product-card-body h3 {
+  margin: 0 0 10px;
+}
+
+.product-card-body p {
+  color: var(--muted);
+  font-size: 0.98rem;
+  margin: 0 0 20px;
+}
+
+.products-catalog-link {
+  margin-top: 28px;
+  text-align: center;
+}
+
+.products-catalog-link a {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.catalog-page h1 {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  letter-spacing: -0.03em;
+}
+
 .section-contact {
   text-align: center;
   max-width: 900px;
@@ -385,6 +455,7 @@ h3 {
 
 @media (max-width: 800px) {
   .site-header {
+    position: static;
     align-items: flex-start;
     flex-direction: column;
   }
