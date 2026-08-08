@@ -18,6 +18,8 @@ ele, tudo servido pelo GitHub Pages da organização.
 
 ```
 index.html, styles.css, assets/          # site institucional (estático, sem build)
+  assets/produtos/                        # thumbnails de catálogo/navegação (não comerciais)
+  assets/social/                          # material institucional para redes sociais (Instagram)
 404.html, robots.txt
 politica-de-privacidade.html, termos-de-uso.html
 docs/                                     # documentação/relatórios do repositório
@@ -29,6 +31,25 @@ produtos/                                 # ÚNICO namespace público de pre-sel
     index.html, styles.css, fonts/        # HTML+CSS estático, sem build, zero JavaScript
     favicon.svg, og-image.svg
 ```
+
+`assets/produtos/` guarda imagens usadas exclusivamente como thumbnail
+de card na home/catálogo (não fazem parte da página individual do
+produto, que pode ter seus próprios assets em `produtos/<slug>/assets/`
+ou arquivos próprios como `og-image.svg`). `assets/social/` guarda
+material de marca preparado para publicação em redes sociais (hoje,
+Instagram) — nunca é publicado automaticamente por este repositório.
+
+## QA mínimo — piso de 320px
+
+Todo QA de responsividade deste site deve incluir **320px** como
+largura mínima obrigatória, além de 375/390/425px (mobile), 768px
+(tablet) e 1440px (desktop). Passar em 390px não é evidência de que a
+página passa em 320px — larguras menores expõem overflow de textos
+sem espaço (e-mails, URLs) que larguras maiores escondem. A correção
+sistêmica para esse tipo de overflow é `overflow-wrap: anywhere` no
+elemento `html` (`styles.css`) — preferir esse tipo de regra global a
+ajustes pontuais por elemento quando o problema for o mesmo em vários
+lugares.
 
 ## Regra de publicação — páginas nascem como produção
 

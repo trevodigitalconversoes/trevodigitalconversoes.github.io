@@ -45,4 +45,12 @@ prevalece.
     de produção deve aparecer lá e na home, com card factual e link
     interno para a página do produto — nunca o hotlink diretamente no
     card. Presença no catálogo **não** significa campanha paga ativa;
-    não confunda as duas coisas em código ou documentação.
+    não confunda as duas coisas em código ou documentação. O thumbnail
+    de cada card deve ser legível em tamanho pequeno (pouco texto,
+    bom contraste) — banners de OG/social geralmente têm texto demais para
+    funcionar como thumbnail; use `assets/produtos/` para imagens
+    criadas só para essa finalidade.
+11. **QA de responsividade inclui 320px** como piso mínimo, além de
+    375/390/425/768/1440. Textos sem espaço (e-mails, URLs) usam
+    `overflow-wrap: anywhere` (regra global em `styles.css`) para não
+    causar overflow horizontal.
