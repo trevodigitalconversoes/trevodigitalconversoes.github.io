@@ -13,9 +13,9 @@
  * conhecidas"): #e0deeb / #e5e3f0 (texto em painel escuro) e
  * #edebf5 / #f0edf7 (marcadores em painel escuro). Os demais tokens
  * (ink, muted, accent, fundos, raios) são uma estimativa razoável de
- * contraste/hierarquia, não uma leitura literal do Figma. Ver
- * docs/etapa_3_a_v1_migracao_presell_trevo.md para o registro
- * completo dessa limitação.
+ * contraste/hierarquia, não uma leitura literal do Figma. Registro
+ * completo dessa limitação na documentação operacional interna
+ * (trevodigitalconversoes/trevo-ops, privado).
  */
 
 * {

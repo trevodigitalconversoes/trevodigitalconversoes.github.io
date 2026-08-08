@@ -14,24 +14,36 @@ ele, tudo servido pelo GitHub Pages da organização.
 > ver `.gitignore`. Links de afiliado usados publicamente nas páginas
 > podem aparecer no HTML quando fizerem parte da página publicada.
 
+## Fronteira público/privado
+
+Desde 2026-08-08, este repositório é a **camada mínima de publicação**:
+só o que é executado/consumido pelo navegador (HTML, CSS, JavaScript
+público, assets, páginas legais, `robots.txt`) e guardrails mínimos de
+repositório. Tooling operacional, testes, QA, evidências, automações e
+documentação interna vivem em
+[`trevodigitalconversoes/trevo-ops`](https://github.com/trevodigitalconversoes/trevo-ops)
+(privado). Ver `CLAUDE.md`/`AGENTS.md` para a regra completa.
+
+`tools/` **não existe mais neste repositório** — migrado integralmente
+para `trevo-ops` (histórico preservado via `git filter-repo`).
+
 ## Estrutura
 
 ```
 index.html, styles.css, assets/          # site institucional (estático, sem build)
   assets/produtos/                        # thumbnails de catálogo/navegação (não comerciais)
   assets/social/                          # material institucional para redes sociais (Instagram)
+  assets/js/                              # JavaScript executado no navegador (ex.: tracking da pre-sell)
 404.html, robots.txt
 politica-de-privacidade.html, termos-de-uso.html
-docs/                                     # documentação/relatórios do repositório
+docs/ADR_PRESELL_OWNERSHIP.md             # guardrail de repositório (fica publico, ver CLAUDE.md/AGENTS.md)
 produtos/                                 # ÚNICO namespace público de pre-sells/produtos
   index.html                              # catálogo: grid de produtos anunciados
   fotografia-presets-lightroom/           # migrada de afiliados-mega-lab PR #51
-    index.html, styles.css, assets/       # HTML+CSS estático, sem build, zero JavaScript
+    index.html, styles.css, assets/       # HTML+CSS estático, sem build
   100-aplicativos-uteis/                  # migrada de /aprovacao/ (removido) em 2026-08-07
     index.html, styles.css, fonts/        # HTML+CSS estático, sem build, zero JavaScript
     favicon.svg, og-image.svg
-tools/                                    # ferramentas operacionais LOCAIS — nunca servidas pelo site
-  instagram/                              # adaptador Instagram/Meta (ver tools/instagram/README.md)
 ```
 
 `assets/produtos/` guarda imagens usadas exclusivamente como thumbnail
@@ -66,9 +78,8 @@ sinal de estado de desenvolvimento. Ver `docs/ADR_PRESELL_OWNERSHIP.md`
 para a regra completa.
 
 **Não existe mais uma área pública separada de revisão/aprovação**
-(`/aprovacao/` foi removido em 2026-08-07 — ver
-`docs/etapa_3_c_v1_remocao_aprovacao_promocao_100_apps.md`). Revisão
-técnica acontece inteiramente em
+(`/aprovacao/` foi removido em 2026-08-07 — histórico completo em
+`trevo-ops`, privado). Revisão técnica acontece inteiramente em
 `branch → PR → ambiente local → QA → revisão humana → merge`.
 
 ## Site institucional (raiz)
@@ -102,7 +113,7 @@ decisões independentes (ver `docs/ADR_PRESELL_OWNERSHIP.md`, seção
 | Caminho | Produto | Status |
 |---|---|---|
 | `/produtos/` | Catálogo público (sem produto próprio) | Lista os produtos de produção existentes |
-| `/produtos/fotografia-presets-lightroom/` | "10 Dicas de Fotografia + 18 Presets de Lightroom" (Hotmart) | Página de produção — migrada do PR #51 de `afiliados-mega-lab` (ver `docs/etapa_3_a_v1_migracao_presell_trevo.md`); hotlink de afiliado configurado; `index,follow`; listada na home e no catálogo; sem merge do PR #1 ainda (revisão humana pendente) |
+| `/produtos/fotografia-presets-lightroom/` | "10 Dicas de Fotografia + 18 Presets de Lightroom" (Hotmart) | Página de produção — migrada do PR #51 de `afiliados-mega-lab` (histórico completo em `trevo-ops`); hotlink de afiliado configurado; `index,follow`; listada na home e no catálogo |
 | `/produtos/100-aplicativos-uteis/` | "+100 Aplicativos Úteis para Produtividade Empreendedora" (Hotmart) | Página de produção — promovida de `/aprovacao/` (removido) em 2026-08-07; fatos comerciais revalidados na Hotmart (07/08/2026); hotlink de afiliado configurado; `index,follow`; listada na home e no catálogo; sem merge do PR #1 ainda (revisão humana pendente) |
 
 ### `/produtos/100-aplicativos-uteis/` — HTML+CSS estático, zero JavaScript
@@ -112,20 +123,17 @@ que dependia de JavaScript para exibir qualquer conteúdo (violava o
 requisito de a página funcionar sem JS). É um único `index.html` +
 `styles.css`, sem build, **sem nenhuma tag `<script>`** — FAQ e conteúdo
 legal (Política de Privacidade/Termos/Contato) usam `<details>`/
-`<summary>` nativos do HTML. Ver
-`docs/100-aplicativos-uteis/decisao_migracao_html_estatico.md`
-para o histórico completo dessa troca,
-`docs/auditoria_100_aplicativos_uteis.md` para a auditoria de
-pré-publicação, e `docs/etapa_3_c_v1_remocao_aprovacao_promocao_100_apps.md`
-para a promoção a `/produtos/`.
+`<summary>` nativos do HTML. Histórico completo dessa troca, auditoria
+de pré-publicação e registro da promoção a `/produtos/` estão em
+`trevo-ops` (privado).
 
 **CTA "Ver produto na Hotmart" — hotlink de afiliado configurado:** os
 dois botões de CTA usam o link otimizado para Google Ads, derivado do
 hotlink de afiliado confirmado na área de Hotlinks da Hotmart, e
 preservam o rastreamento de afiliado (`target="_blank"`,
-`rel="noopener noreferrer sponsored"`). Ver
-`docs/100-aplicativos-uteis/compliance.md` para o link completo e os
-testes recomendados antes de qualquer campanha paga.
+`rel="noopener noreferrer sponsored"`). Registro completo do link e dos
+testes recomendados antes de qualquer campanha paga: `trevo-ops`
+(privado).
 
 **Por que não há analytics/tags nesta fase:** a página não deve gerar
 dados de terceiros (Analytics/GTM/Pixel/Hotjar/Clarity) antes de
@@ -153,35 +161,14 @@ isso fica a cargo de quem revisar as mudanças localmente.
   repositório `afiliados-mega-lab`, GitHub Pages como hospedagem
   atual, `/produtos/` como único namespace público, e a regra sobre
   quando contato com produtora é (ou não) necessário. **Leia antes de
-  implementar qualquer pre-sell/landing.**
+  implementar qualquer pre-sell/landing.** Fica público de propósito —
+  é um guardrail de repositório, referenciado por `CLAUDE.md`/`AGENTS.md`.
 - `CLAUDE.md` / `AGENTS.md` — resumo das regras acima para agentes de
-  código, apontando para o ADR.
-- `docs/auditoria_100_aplicativos_uteis.md` — auditoria de
-  pré-publicação da landing "+100 Aplicativos Úteis" (clareza, conversão,
-  confiança, compliance, SEO, acessibilidade, performance,
-  compatibilidade, publicação, risco de aprovação) — relatório
-  histórico, anterior à promoção para `/produtos/`.
-- `docs/etapa_3_a_v1_migracao_presell_trevo.md` — migração da pre-sell
-  "10 Dicas de Fotografia + 18 Presets de Lightroom" do PR #51 de
-  `afiliados-mega-lab` para este repositório.
-- `docs/etapa_3_b_v1_plano_tracking_nivel_0.md` — investigação e plano
-  (sem implementação) de tracking mínimo para as pre-sells de
-  produção.
-- `docs/etapa_3_c_v1_remocao_aprovacao_promocao_100_apps.md` — remoção
-  completa de `/aprovacao/` e promoção de "+100 Aplicativos Úteis"
-  para `/produtos/`.
-- `docs/etapa_3_d_v1_correcoes_visual_qa_rodada_1.md` — correções da
-  Rodada 1 de Visual QA (404 sem identidade visual, espaçamento do
-  catálogo, header sticky em mobile).
-- `docs/etapa_3_e_v1_acabamento_mobile_social_pre_lancamento.md` —
-  overflow de e-mail em mobile, piso de 320px, thumbnail de "+100
-  Aplicativos Úteis", preparação do Post 2 institucional para
-  Instagram.
-- `docs/etapa_3_f_v1_integracao_instagram_api.md` — adaptador
-  Instagram/Meta (`tools/instagram/`): pesquisa oficial, arquitetura,
-  segurança, testes, e resultado da validação read-only.
-- `docs/100-aplicativos-uteis/` — documentação técnica da landing
-  "+100 Aplicativos Úteis" (arquitetura estática, compliance, decisão
-  de usar HTML+CSS estático sem JavaScript).
-- `tools/instagram/README.md` — manual da ferramenta operacional local
-  de publicação no Instagram (nunca servida pelo site público).
+  código, incluindo a fronteira público/privado com `trevo-ops`.
+
+Documentação operacional (auditorias, relatórios de QA, migrações,
+integrações, tracking/analytics, ADRs internos) vive em
+[`trevo-ops/docs/`](https://github.com/trevodigitalconversoes/trevo-ops)
+(privado) — inclui o histórico completo da migração desta pre-sell, da
+remoção de `/aprovacao/`, das rodadas de QA visual, do adaptador
+Instagram/Meta e do contrato de tracking PostHog.

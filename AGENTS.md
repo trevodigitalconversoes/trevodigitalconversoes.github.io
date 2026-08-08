@@ -54,15 +54,44 @@ prevalece.
     375/390/425/768/1440. Textos sem espaço (e-mails, URLs) usam
     `overflow-wrap: anywhere` (regra global em `styles.css`) para não
     causar overflow horizontal.
-12. **Integrações com redes sociais (Instagram/Meta e futuras) são
-    ferramentas locais/operacionais** (`tools/<rede>/`), nunca código
-    servido pelo site público. Nenhum token, secret ou credencial de
-    API social entra em HTML/CSS/JS público, commit, log ou saída de
-    comando — configuração sempre via `.env` local (nunca commitado).
-    Publicação real exige confirmação dupla e explícita (flag de CLI +
-    variável de ambiente); nenhum agente publica, apaga, comenta ou
-    interage automaticamente em rede social sem essa confirmação
-    humana. Use sempre a API oficial da plataforma. Código de
-    integração deve permanecer extraível (core sem dependência do
-    HTML/regras de campanha do Trevo) — ver
-    `tools/instagram/README.md` como referência.
+12. **Integrações com redes sociais (Instagram/Meta e futuras) e
+    qualquer outra ferramenta operacional** vivem em
+    `trevodigitalconversoes/trevo-ops` (privado) — **nunca** em
+    `tools/<rede>/` neste repositório (regra obsoleta desde 2026-08-08,
+    ver item 13). Nenhum token, secret ou credencial de API social
+    entra em HTML/CSS/JS público, commit, log ou saída de comando —
+    configuração sempre via `.env` local no repo privado (nunca
+    commitado, nem lá). Publicação real exige confirmação dupla e
+    explícita (flag de CLI + variável de ambiente); nenhum agente
+    publica, apaga, comenta ou interage automaticamente em rede social
+    sem essa confirmação humana. Use sempre a API oficial da
+    plataforma. Código de integração deve permanecer extraível (core
+    sem dependência do HTML/regras de campanha do Trevo) — ver
+    `trevo-ops/tools/instagram/README.md` como referência.
+13. **Fronteira público/privado** (decisão de 2026-08-08, substitui a
+    permissão anterior de `tools/<rede>/` neste repositório):
+    - **Este repositório** (`trevodigitalconversoes/trevodigitalconversoes.github.io`)
+      é a **camada mínima de publicação**. Pode conter: HTML público,
+      CSS, JavaScript executado no navegador, assets públicos, páginas
+      de produto/pre-sells, arquivos legais públicos, `robots.txt`,
+      configuração frontend que precise obrigatoriamente chegar ao
+      navegador (ex.: token de ingestão de analytics do lado do
+      cliente — nunca uma credencial administrativa), e guardrails
+      mínimos de repositório (como este arquivo e o ADR). **Não pode
+      conter:** `/tools`, testes internos, Python/CLIs operacionais,
+      automações, secret management, evidências de QA, relatórios
+      internos, scripts de publicação, integrações externas
+      (Instagram/Meta, PostHog e futuras), geradores de config que
+      dependam de segredo, ou documentação operacional extensa.
+    - **`trevodigitalconversoes/trevo-ops`** (privado) é dono de:
+      `tools/` (todas as ferramentas), QA, testes, automações, scripts,
+      geração de config (inclusive a que produz o JS público — o
+      gerador escreve no checkout público via caminho explícito,
+      nunca hardcoded), evidências, relatórios internos, ADRs
+      operacionais, tracking/analytics operacional, integrações
+      externas, `.env.example`. `.env` real fica **só local**, em
+      qualquer um dos dois repositórios, nunca commitado.
+    - Antes de adicionar qualquer ferramenta/automação/teste/relatório
+      interno, confirme se o diretório de trabalho é o repositório
+      correto (`git remote -v`) — se for este (`.github.io`), pare e
+      trabalhe em `trevo-ops` em vez de recriar a pasta `tools/` aqui.

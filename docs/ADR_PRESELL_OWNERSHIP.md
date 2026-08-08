@@ -105,8 +105,8 @@ publicados e legíveis por qualquer visitante que veja o código-fonte.
 2026-08-07** — não existe mais como pasta, rota ou fluxo. Não há
 "exceção histórica ativa": a única página que ainda vivia lá
 (`100-aplicativos-uteis/`) foi promovida para
-`/produtos/100-aplicativos-uteis/` na mesma etapa (ver
-`docs/etapa_3_c_v1_remocao_aprovacao_promocao_100_apps.md`).
+`/produtos/100-aplicativos-uteis/` na mesma etapa (registro completo em
+`trevo-ops`, privado).
 
 **`/produtos/` é o único namespace público de pre-sells/produtos**
 deste repositório. Não existe mais um fluxo público de aprovação,
@@ -120,9 +120,9 @@ pública separada da produção"). Se um caso realmente excepcional exigir
 algo assim no futuro, isso exige uma ADR nova e explícita — não uma
 decisão silenciosa durante a implementação.
 
-Documentos históricos (ex.: `docs/etapa_3_a_v1_migracao_presell_trevo.md`)
-podem mencionar `/aprovacao/` ao narrar o que aconteceu naquela etapa —
-isso é registro de passado, não instrução de uso atual.
+Documentos históricos operacionais (em `trevo-ops`, privado) podem
+mencionar `/aprovacao/` ao narrar o que aconteceu naquela etapa — isso é
+registro de passado, não instrução de uso atual.
 
 ### Contato com produtor
 
@@ -228,14 +228,19 @@ Uma página em `/produtos/<slug>/` destinada a produção deve ser
   adaptado, hashes de assets, e limitações/gaps encontrados (ex.:
   tokens de design não preservados, validações não realizadas).
 
+## Fronteira público/privado (atualização 2026-08-08)
+
+Adicionada em complemento a esta ADR, não substitui nenhuma regra
+acima: separação entre este repositório (camada mínima de publicação) e
+`trevodigitalconversoes/trevo-ops` (privado — tooling, testes, QA,
+automações, evidências, documentação operacional). Regra completa em
+`CLAUDE.md`/`AGENTS.md`, seção "Fronteira público/privado". Em resumo:
+este repositório nunca deve conter `/tools`, testes internos,
+automações, CLIs, integrações externas (ex.: Instagram/Meta) ou
+documentação operacional extensa — isso vive em `trevo-ops`.
+
 ## Referências
 
-- Migração de referência: `docs/etapa_3_a_v1_migracao_presell_trevo.md`
-  (pre-sell "10 Dicas de Fotografia + 18 Presets de Lightroom",
-  migrada de `afiliados-mega-lab` PR #51 para
-  `/produtos/fotografia-presets-lightroom/`).
-- Plano de tracking (investigação, sem implementação):
-  `docs/etapa_3_b_v1_plano_tracking_nivel_0.md`.
-- Remoção de `/aprovacao/` e promoção de "+100 Aplicativos Úteis":
-  `docs/etapa_3_c_v1_remocao_aprovacao_promocao_100_apps.md`.
+- Migração de referência, plano de tracking, remoção de `/aprovacao/` e
+  demais relatórios operacionais: `trevo-ops/docs/` (privado).
 - `README.md` — estrutura geral do repositório e deploy.
