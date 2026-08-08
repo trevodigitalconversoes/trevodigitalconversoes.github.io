@@ -15,3 +15,11 @@ tools/instagram/.instagram-output/
 tools/instagram/**/__pycache__/
 tools/instagram/.pytest_cache/
 tools/instagram/**/*.pyc
+
+# tools/pagespeed/ — evidencia bruta de execucao local (JSONs grandes,
+# 100% reproduzivel rodando a ferramenta de novo — ver tools/pagespeed/README.md)
+/evidencias/
+tools/pagespeed/**/__pycache__/
+tools/pagespeed/.pytest_cache/
+tools/pagespeed/**/*.pyc
+tools/pagespeed/**/*.egg-info/
