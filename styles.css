@@ -17,6 +17,16 @@
 
 html {
   scroll-behavior: smooth;
+  /*
+   * Correcao sistemica para textos sem espacos (e-mails, URLs
+   * longas): sem isso, um token unico mais largo que o container
+   * (ex.: um endereco de e-mail em telas ~320-375px) causa overflow
+   * horizontal em vez de quebrar. overflow-wrap: anywhere so entra
+   * em acao quando a palavra realmente nao cabe -- nao afeta a
+   * quebra normal de texto com espacos, nao reduz fonte, nao esconde
+   * conteudo, sem ellipsis.
+   */
+  overflow-wrap: anywhere;
 }
 
 body {
