@@ -1,13 +1,15 @@
 /*
  * Tracking do Microteste Comercial 01 (PostHog + HotLink Hotmart).
- * Contrato completo: docs/etapa_5_c_v1_contrato_tracking_microteste01.md
- * e tools/tracking/README.md.
+ * Gerado/mantido a partir de trevodigitalconversoes/trevo-ops (privado)
+ * -- contrato completo e gerador em trevo-ops/tools/tracking/. Este
+ * arquivo e o unico artefato de tracking que vive neste repo publico
+ * (roda no navegador).
  *
  * A partir de 2026-08-08 este arquivo tambem habilita, via
- * config.posthogInitOptions (gerado em Python, ver
- * tools/tracking/src/trevo_tracking/tracking_config.py): autocapture,
- * heatmaps, Web Vitals e Session Replay -- decisao explicita do usuario
- * de usar progressivamente mais capacidades do PostHog nesta pre-sell.
+ * config.posthogInitOptions (gerado em Python, em trevo-ops):
+ * autocapture, heatmaps, Web Vitals e Session Replay -- decisao
+ * explicita do usuario de usar progressivamente mais capacidades do
+ * PostHog nesta pre-sell.
  * Esse objeto e repassado a posthog.init() sem transformacao (ver
  * initPostHog abaixo), entao qualquer mudanca de config fica so no
  * Python.

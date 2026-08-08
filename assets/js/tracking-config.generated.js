@@ -1,10 +1,12 @@
 /*
- * GERADO POR tools/tracking/etapa_5_a_v1_generate_tracking_config.py -- nao editar a mao.
+ * GERADO POR trevo-ops/tools/tracking/etapa_5_a_v1_generate_tracking_config.py -- nao editar a mao.
+ * Fonte: trevodigitalconversoes/trevo-ops (privado).
  *
- * Este arquivo E publico e commitado DE PROPOSITO: posthogProjectToken e
- * um token de ingestao do SDK web (nao uma Personal API Key) e, por
- * definicao, precisa chegar ao navegador para o PostHog funcionar.
- * Ver tools/tracking/README.md, secao "Project token x Personal API Key".
+ * Este arquivo E publico e commitado DE PROPOSITO no repo do site:
+ * posthogProjectToken e um token de ingestao do SDK web (nao uma
+ * Personal API Key) e, por definicao, precisa chegar ao navegador para
+ * o PostHog funcionar. Ver tools/tracking/README.md (em trevo-ops),
+ * secao "Project token x Personal API Key".
  */
 window.__TREVO_TRACKING_CONFIG__ = {
   "posthogProjectToken": "phc_xqY4atZT4yTeXDf59JKbrwXRpKSiPSKtiouJ4YzKa5Lj",
