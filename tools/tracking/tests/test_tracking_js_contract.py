@@ -22,12 +22,28 @@ def test_never_calls_identify_or_alias_or_group():
     assert ".setPersonProperties(" not in source
 
 
-def test_never_enables_session_recording_or_autocapture_or_surveys():
+def test_never_hardcodes_capabilities_that_belong_in_python_config():
+    """Autocapture/heatmaps/Web Vitals/Session Replay agora sao
+    habilitados de proposito (decisao do usuario em 2026-08-08), mas a
+    fonte de verdade e config.posthogInitOptions (Python), nunca
+    hardcoded aqui -- o JS so repassa o objeto ao posthog.init()."""
     source = _source()
     assert "startSessionRecording" not in source
-    assert "surveys" not in source
-    assert "heatmaps" not in source
     assert "loadFeatureFlags" not in source
+    assert "posthog.init(config.posthogProjectToken, initOptions)" in source
+
+
+def test_never_calls_survey_or_feature_flag_apis():
+    source = _source()
+    assert ".getSurveys(" not in source
+    assert ".getFeatureFlag(" not in source
+    assert ".onFeatureFlags(" not in source
+
+
+def test_never_opts_into_network_payload_capture():
+    source = _source()
+    for forbidden in ("recordBody", "recordHeaders", "captureNetworkV2"):
+        assert forbidden not in source
 
 
 def test_no_personal_data_fields_referenced():
