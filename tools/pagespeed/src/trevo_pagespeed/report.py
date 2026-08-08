@@ -29,6 +29,7 @@ def _run_to_dict(r: RunResult) -> dict[str, Any]:
         "lighthouse_version": r.lighthouse_version,
         "fetch_time": r.fetch_time,
         "warnings": r.warnings,
+        "environment": r.environment,
         "scores": r.scores,
         "metrics": {
             k: {
