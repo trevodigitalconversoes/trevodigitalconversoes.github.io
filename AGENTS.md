@@ -54,3 +54,15 @@ prevalece.
     375/390/425/768/1440. Textos sem espaço (e-mails, URLs) usam
     `overflow-wrap: anywhere` (regra global em `styles.css`) para não
     causar overflow horizontal.
+12. **Integrações com redes sociais (Instagram/Meta e futuras) são
+    ferramentas locais/operacionais** (`tools/<rede>/`), nunca código
+    servido pelo site público. Nenhum token, secret ou credencial de
+    API social entra em HTML/CSS/JS público, commit, log ou saída de
+    comando — configuração sempre via `.env` local (nunca commitado).
+    Publicação real exige confirmação dupla e explícita (flag de CLI +
+    variável de ambiente); nenhum agente publica, apaga, comenta ou
+    interage automaticamente em rede social sem essa confirmação
+    humana. Use sempre a API oficial da plataforma. Código de
+    integração deve permanecer extraível (core sem dependência do
+    HTML/regras de campanha do Trevo) — ver
+    `tools/instagram/README.md` como referência.

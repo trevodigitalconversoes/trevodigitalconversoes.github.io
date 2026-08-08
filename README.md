@@ -30,6 +30,8 @@ produtos/                                 # ÚNICO namespace público de pre-sel
   100-aplicativos-uteis/                  # migrada de /aprovacao/ (removido) em 2026-08-07
     index.html, styles.css, fonts/        # HTML+CSS estático, sem build, zero JavaScript
     favicon.svg, og-image.svg
+tools/                                    # ferramentas operacionais LOCAIS — nunca servidas pelo site
+  instagram/                              # adaptador Instagram/Meta (ver tools/instagram/README.md)
 ```
 
 `assets/produtos/` guarda imagens usadas exclusivamente como thumbnail
@@ -168,6 +170,18 @@ isso fica a cargo de quem revisar as mudanças localmente.
 - `docs/etapa_3_c_v1_remocao_aprovacao_promocao_100_apps.md` — remoção
   completa de `/aprovacao/` e promoção de "+100 Aplicativos Úteis"
   para `/produtos/`.
+- `docs/etapa_3_d_v1_correcoes_visual_qa_rodada_1.md` — correções da
+  Rodada 1 de Visual QA (404 sem identidade visual, espaçamento do
+  catálogo, header sticky em mobile).
+- `docs/etapa_3_e_v1_acabamento_mobile_social_pre_lancamento.md` —
+  overflow de e-mail em mobile, piso de 320px, thumbnail de "+100
+  Aplicativos Úteis", preparação do Post 2 institucional para
+  Instagram.
+- `docs/etapa_3_f_v1_integracao_instagram_api.md` — adaptador
+  Instagram/Meta (`tools/instagram/`): pesquisa oficial, arquitetura,
+  segurança, testes, e resultado da validação read-only.
 - `docs/100-aplicativos-uteis/` — documentação técnica da landing
   "+100 Aplicativos Úteis" (arquitetura estática, compliance, decisão
   de usar HTML+CSS estático sem JavaScript).
+- `tools/instagram/README.md` — manual da ferramenta operacional local
+  de publicação no Instagram (nunca servida pelo site público).
