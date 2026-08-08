@@ -1,7 +1,22 @@
 /*
- * Tracking do Microteste Comercial 01 (PostHog anonimo + HotLink Hotmart).
+ * Tracking do Microteste Comercial 01 (PostHog + HotLink Hotmart).
  * Contrato completo: docs/etapa_5_c_v1_contrato_tracking_microteste01.md
  * e tools/tracking/README.md.
+ *
+ * A partir de 2026-08-08 este arquivo tambem habilita, via
+ * config.posthogInitOptions (gerado em Python, ver
+ * tools/tracking/src/trevo_tracking/tracking_config.py): autocapture,
+ * heatmaps, Web Vitals e Session Replay -- decisao explicita do usuario
+ * de usar progressivamente mais capacidades do PostHog nesta pre-sell.
+ * Esse objeto e repassado a posthog.init() sem transformacao (ver
+ * initPostHog abaixo), entao qualquer mudanca de config fica so no
+ * Python.
+ *
+ * O que NAO muda com isso: `outbound_hotmart` continua a metrica de
+ * conversao explicita e canonica (autocapture nao a substitui, so
+ * adiciona contexto complementar); nenhuma chamada a identify()/
+ * alias()/group()/setPersonProperties() existe neste arquivo; nenhuma
+ * captura de payload de rede (request/response body) e habilitada.
  *
  * Regra inegociavel: falha de tracking NUNCA pode impedir o CTA. Cada
  * bloco que fala com o PostHog ou constroi URL esta em try/catch, e o
