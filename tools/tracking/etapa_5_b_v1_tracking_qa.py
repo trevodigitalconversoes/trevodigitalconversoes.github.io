@@ -25,16 +25,25 @@ TRACKING_JS = REPO_ROOT / "assets" / "js" / "etapa_5_d_v1_tracking.js"
 GENERATED_CONFIG_JS = REPO_ROOT / "assets" / "js" / "tracking-config.generated.js"
 PRESELL_HTML = REPO_ROOT / "produtos" / "fotografia-presets-lightroom" / "index.html"
 
-# Padroes que NUNCA podem aparecer no JS publico deste microteste (etapa 8).
+# Padroes que NUNCA podem aparecer no JS publico deste microteste.
+#
+# Nota (2026-08-08): heatmaps/session replay/autocapture/Web Vitals sao
+# agora habilitados DE PROPOSITO via config.posthogInitOptions (decisao
+# do usuario) -- por isso NAO ha mais um bloqueio generico para as
+# palavras "heatmaps"/"session recording" aqui. O que continua proibido e
+# codigo que identifica pessoas, chama APIs de surveys/feature flags
+# diretamente, ou opta explicitamente por captura de payload de rede.
 FORBIDDEN_JS_PATTERNS = [
     r"\.identify\s*\(",
     r"\.alias\s*\(",
     r"\.group\s*\(",
     r"\.setPersonProperties\s*\(",
-    r"startSessionRecording",
-    r"\bsurveys\b",
-    r"\bheatmaps\b",
-    r"loadFeatureFlags",
+    r"\.getSurveys\s*\(",
+    r"\.getFeatureFlag\s*\(",
+    r"\.onFeatureFlags\s*\(",
+    r"recordBody",
+    r"recordHeaders",
+    r"captureNetworkV2",
 ]
 
 
