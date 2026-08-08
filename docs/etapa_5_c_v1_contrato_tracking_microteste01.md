@@ -154,3 +154,121 @@ que roda. Se o script nunca rodar (bloqueado por ad blocker, erro, JS
 desabilitado), o clique ainda leva ao HotLink correto — só sem
 enriquecimento de atribuição. Nenhuma chamada ao PostHog pode impedir a
 navegação (todas estão em `try/catch`).
+
+## Revisão de escopo — 2026-08-08 (capacidades PostHog habilitadas)
+
+O desenho original deste contrato (rodada anterior) desabilitava
+explicitamente autocapture, heatmaps e Session Replay, mantendo só
+`$pageview` + `outbound_hotmart`. O usuário decidiu explicitamente **não**
+limitar o projeto a esse desenho mínimo permanentemente e usar
+progressivamente mais capacidades do PostHog já disponíveis/configuradas
+no projeto conectado. Este documento registra a decisão revisada.
+
+### Estado real do projeto PostHog (confirmado externamente em 2026-08-08)
+
+| Configuração | Valor |
+|---|---|
+| `anonymize_ips` | `true` |
+| `completed_snippet_onboarding` | `true` |
+| `autocapture_opt_out` | `false` (ou seja, autocapture permitido) |
+| `autocapture_web_vitals_opt_in` | `true` |
+| `heatmaps_opt_in` | `true` |
+| `session_recording_opt_in` | `true` |
+| `session_recording_retention_period` | `30d` |
+| `capture_console_log_opt_in` | `true` |
+| `session_recording_masking_config` | `null` |
+| `session_recording_network_payload_capture_config` | `null` |
+| `ingested_event` | `false` (nenhum evento real ainda ingerido) |
+
+Essas flags dizem o que está **permitido/configurado no projeto**. O que
+efetivamente é habilitado no `posthog.init()` desta pre-sell é uma decisão
+separada, registrada abaixo — não usamos tudo que o projeto permite
+indiscriminadamente.
+
+### Fontes oficiais consultadas em 2026-08-08
+
+- [Anonymous vs identified events](https://posthog.com/docs/data/anonymous-vs-identified-events) — valores válidos de `person_profiles`.
+- [PostHogConfig reference](https://posthog.com/docs/references/posthog-js/types/PostHogConfig) — `enable_recording_console_log`, `capture_heatmaps` (nome atual, substitui `enable_heatmaps`).
+- [JS SDK config](https://posthog.com/docs/libraries/js/config) — `autocapture`, `capture_pageview`, `disable_session_recording`, mudança `enable_heatmaps` → `capture_heatmaps`.
+- [Session Replay — Privacy](https://posthog.com/docs/session-replay/privacy) — masking default de inputs, texto geral não mascarado por padrão.
+- [Session Replay — Network recording](https://posthog.com/docs/session-replay/network-recording) — captura de payload é opt-in; URL/timing sempre capturados; deny-list fixa de headers (`authorization`, `cookie`, `set-cookie`) nunca capturados independentemente de config.
+- [Web Vitals](https://posthog.com/docs/web-analytics/web-vitals) — via `capture_performance: { web_vitals: true }`.
+- [Heatmaps](https://posthog.com/docs/toolbar/heatmaps) — chave de config (nota: esta página ainda cita o nome legado `enable_heatmaps`; usamos `capture_heatmaps` por ser o nome documentado como atual na referência de tipos).
+- [Google Ads ValueTrack](https://support.google.com/google-ads/answer/6305348) e [Hotmart — SRC](https://help.hotmart.com/en/article/216441797/how-can-i-track-the-source-of-my-sales-on-hotmart-) — já confirmados na rodada anterior, sem mudança.
+
+Algumas páginas retornaram conteúdo truncado nas consultas desta sessão
+(ex.: shape completo de `session_recording`, defaults exatos de
+`capture_performance`) — as decisões abaixo usam o que foi confirmado com
+alta confiança; qualquer ponto assinalado como "confirmar antes do
+primeiro deploy real" deve ser revalidado lendo a doc completa (não só o
+fetch parcial) antes de gerar tráfego pago.
+
+### `person_profiles` — revalidado
+
+`'never'` **não aparece mais** como valor documentado/suportado
+(`posthog.com/docs/data/anonymous-vs-identified-events` só lista
+`'identified_only'` e `'always'`). Mantido `'identified_only'`: como o
+código nunca chama `identify()`/`alias()`/`group()`/`setPersonProperties()`,
+nenhum person profile é criado de qualquer forma — equivalente prático ao
+`'never'` original. **Sem conflito** com autocapture/heatmaps/Web
+Vitals/Session Replay: nenhuma dessas capacidades exige pessoa
+identificada, todas funcionam sobre `distinct_id`/sessão anônimos.
+
+### Capacidades habilitadas nesta pre-sell e por quê
+
+| Capacidade | Habilitada? | Config | Motivo |
+|---|---|---|---|
+| Product/Web Analytics (`$pageview`) | sim | `capture_pageview: true`, `capture_pageleave: true` | já existia; `capture_pageleave` ligado agora para métricas de engajamento do Web Analytics |
+| `outbound_hotmart` | sim (inalterado) | evento customizado explícito | continua a métrica canônica de conversão — autocapture NÃO a substitui |
+| Autocapture | sim | `autocapture: true` | pedido explícito do usuário; página não tem campo sensível hoje |
+| Heatmaps | sim | `capture_heatmaps: true` | pedido explícito; objetivo declarado: entender interação com FAQ/CTAs |
+| Web Vitals | sim | `capture_performance: { web_vitals: true }` | observação de campo (RUM), complementar ao PageSpeed/Lighthouse (laboratório) — não substitui o baseline `tools/pagespeed/` |
+| Session Replay | sim | `disable_session_recording: false` | pedido explícito; ver decisões de privacidade abaixo |
+| Console log recording | **não** | `enable_recording_console_log: false` | permitido pelo projeto, mas sem utilidade concreta aqui e com risco de vazamento acidental — decisão específica desta pre-sell, não uma mudança de config global |
+| Captura de payload de rede | **não** | ausente do config (fica no default/opt-in não usado) | preserva `session_recording_network_payload_capture_config = null` observado no projeto; a doc confirma que é opt-in e que headers de auth/cookie nunca são capturados de qualquer forma |
+| Persistência (cookies/localStorage do PostHog) | sim, agora | `disable_persistence: false` | necessária para Session Replay/heatmaps correlacionarem uma sessão entre interações; era `true` no desenho mínimo original — mudança relevante de privacidade, registrada aqui explicitamente |
+| `identify()`/person profile | não | `person_profiles: 'identified_only'`, sem chamada a `identify()` | inalterado |
+
+### Masking (Session Replay)
+
+Input fields (e-mail, senha etc.) são mascarados **por padrão** pelo SDK
+(`posthog.com/docs/session-replay/privacy`), então `maskAllInputs: true`
+no config é uma confirmação explícita de um comportamento que já seria o
+default — feito assim de propósito, para não depender só do default
+implícito. Texto geral da página **não** é mascarado por padrão; aceitável
+aqui porque a pre-sell não tem formulário/checkout e todo o texto visível
+é copy comercial pública, sem dado gerado pelo usuário.
+
+### Rede
+
+Nenhuma opção de captura de payload de rede foi adicionada ao config.
+Captura de URL + timing continua acontecendo (parte do Session
+Replay/Web Vitals padrão), mas nunca corpo de request/response, nunca
+headers sensíveis — e mesmo que fosse habilitado no futuro, a doc
+confirma uma deny-list fixa do PostHog que nunca captura
+`authorization`/`cookie`/`set-cookie`.
+
+### Sampling / retenção
+
+Retenção observada no projeto: `session_recording_retention_period = 30d`
+— registrado aqui, **não alterado** nesta rodada (sem necessidade
+comprovada de mudar).
+
+Sampling de Session Replay (gravar 100% das sessões vs. uma amostra) é
+uma decisão econômica/de produto que depende de volume de tráfego real —
+que ainda não existe (microteste não lançado). Recomendação, não
+implementada em código: começar com 100% das sessões dado o volume baixo
+esperado no primeiro microteste, e revisitar a amostragem (via
+configuração do projeto no PostHog, não via este código) antes de
+escalar tráfego pago. Fica registrado como decisão pendente de revisão
+humana antes de qualquer campanha real.
+
+### IP — gate encerrado
+
+`anonymize_ips = true` confirmado no projeto PostHog conectado. O gate de
+privacidade de IP desta pre-sell está **PASS**. Formulação factual (sem
+linguagem jurídica absoluta): o projeto está configurado para
+processar/descartar o endereço IP do visitante conforme essa opção do
+PostHog, não para "não processar IP algum" — a requisição HTTP
+inevitavelmente carrega o IP de origem até o servidor do PostHog antes de
+qualquer transformação ser aplicada.

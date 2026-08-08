@@ -32,19 +32,26 @@
         de saída para a Hotmart, de forma técnica e anônima:
       </p>
       <ul>
-        <li>Os eventos coletados (visita à página e clique em botão de saída) não são associados a um
-          perfil de pessoa identificada — o site não chama a função de identificação do PostHog em nenhum
-          momento.</li>
-        <li>Não há gravação de sessão (session replay), captura automática de cliques em todo o site
-          (autocapture), pesquisas (surveys) nem mapas de calor (heatmaps).</li>
-        <li>A configuração do PostHog nessas páginas desabilita a persistência local de dados pelo próprio
-          PostHog (cookies/armazenamento do navegador criados por ele).</li>
+        <li>Os eventos coletados não são associados a um perfil de pessoa identificada — o site não chama a
+          função de identificação do PostHog em nenhum momento.</li>
+        <li>Além da visita à página e do clique em botão de saída para a Hotmart, essas páginas também podem
+          registrar automaticamente interações gerais de navegação (cliques, rolagem), mapas de calor
+          agregados de onde os visitantes clicam/rolam na página, e métricas técnicas de velocidade de
+          carregamento (Web Vitals) — sempre de forma anônima, sem associar a uma pessoa identificada.</li>
+        <li>Essas páginas também podem gravar sessões de navegação (replay da tela) para entender como o
+          site é usado. Campos de formulário sensíveis (como e-mail e senha) são mascarados/ocultados
+          automaticamente nessa gravação; como esta pre-sell não possui formulário ou checkout próprio, não
+          há campo desse tipo a gravar. Não é capturado o conteúdo de requisições de rede (corpo de dados
+          trocados com servidores) nem o console técnico do navegador nessas gravações.</li>
+        <li>A configuração do PostHog nessas páginas usa cookies/armazenamento local do navegador (criados
+          pelo próprio PostHog) para reconhecer a mesma sessão de navegação — sem identificar a pessoa.</li>
         <li>Somente parâmetros de campanha reconhecidos (ex.: utm_source, utm_campaign, gclid) são
           registrados quando presentes na URL de chegada; qualquer outro parâmetro de URL é descartado
           antes do envio ao PostHog.</li>
-        <li>O descarte do endereço IP do visitante nos servidores do PostHog é a configuração desejada para
-          este projeto; a confirmação de que essa opção está ativa no projeto PostHog conectado está em
-          verificação humana e será atualizada aqui assim que confirmada.</li>
+        <li>O projeto PostHog utilizado está configurado para descartar/processar o endereço IP do
+          visitante conforme essa opção da plataforma, antes de ficar disponível nos relatórios.</li>
+        <li>Os dados de gravação de sessão são mantidos por um período limitado (atualmente 30 dias) e
+          depois descartados pela própria plataforma.</li>
       </ul>
       <p>
         Caso você entre em contato diretamente por e-mail ou redes sociais (canais listados na seção

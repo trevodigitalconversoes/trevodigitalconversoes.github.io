@@ -22,7 +22,7 @@ tools/tracking/
   src/trevo_tracking/          # core Python: config, whitelist, SRC, HotLink, config publica
   etapa_5_a_v1_generate_tracking_config.py   # gera assets/js/tracking-config.generated.js
   etapa_5_b_v1_tracking_qa.py                # QA estatico local (sem rede/browser)
-  tests/                        # 39 testes, sem chamar PostHog/Hotmart real
+  tests/                        # 46 testes, sem chamar PostHog/Hotmart real
 
 assets/js/
   etapa_5_d_v1_tracking.js              # runtime publico (carregado pela pre-sell)
@@ -81,46 +81,62 @@ Se `POSTHOG_PROJECT_TOKEN` estiver ausente, `etapa_5_a` para **antes** de
 escrever qualquer arquivo e imprime `{"status": "POSTHOG_PROJECT_TOKEN_AUSENTE"}`
 (exit 1) — nunca pede para colar o token no chat.
 
-## Configuração PostHog (eventos anônimos)
+## Configuração PostHog
+
+**Histórico da decisão:** a rodada anterior deste PR usava um desenho
+mínimo (autocapture/heatmaps/session replay desligados). Em 2026-08-08 o
+usuário decidiu explicitamente usar progressivamente mais capacidades do
+PostHog já disponíveis no projeto conectado, em vez de limitar o projeto
+permanentemente a esse desenho mínimo. Registro completo da decisão,
+estado real do projeto PostHog e fontes oficiais consultadas:
+[`docs/etapa_5_c_v1_contrato_tracking_microteste01.md`](../../docs/etapa_5_c_v1_contrato_tracking_microteste01.md#revisão-de-escopo--2026-08-08-capacidades-posthog-habilitadas).
 
 ```js
 {
-  person_profiles: 'identified_only', // ver nota abaixo
-  autocapture: false,
+  person_profiles: 'identified_only', // ver nota abaixo -- 'never' nao existe mais na doc atual
+  autocapture: true,
   capture_pageview: true,
-  capture_pageleave: false,
-  disable_session_recording: true,
-  disable_persistence: true,
+  capture_pageleave: true,
+  disable_session_recording: false,
+  disable_persistence: false,
   save_campaign_params: true,
   save_referrer: false,
   debug: false,
+  capture_performance: { web_vitals: true },   // Web Vitals (RUM) -- nao substitui tools/pagespeed/
+  capture_heatmaps: true,
+  enable_recording_console_log: false,          // decisao explicita: OFF nesta pre-sell
+  session_recording: { maskAllInputs: true },   // reforca (nao muda) o default do SDK
   before_send: <sanitiza $current_url pela whitelist antes de enviar>
 }
 ```
 
-**Mudança de API registrada:** a configuração desejada original era
-`person_profiles: 'never'`. A documentação atual do PostHog (confirmada
-em 2026-08-08) documenta `'identified_only'` como o valor atual —
-default recomendado, que cria um person profile **somente** se
-`identify()` for chamado. Como este código **nunca** chama
+**Mudança de API registrada:** `person_profiles: 'never'` não aparece mais
+como valor documentado/suportado (revalidado em 2026-08-08) — só
+`'identified_only'` (default recomendado) e `'always'`. Mantido
+`'identified_only'`: como este código **nunca** chama
 `identify()`/`alias()`/`group()`/`setPersonProperties()`, o efeito
-prático é idêntico ao `'never'` original: nenhum person profile é criado
-para nenhum visitante. Ver `tools/tracking/src/trevo_tracking/tracking_config.py`.
+prático continua idêntico ao `'never'` original — nenhum person profile é
+criado. Autocapture/heatmaps/Web Vitals/Session Replay não exigem pessoa
+identificada, então não há conflito com essa escolha.
 
-Nunca habilitados neste microteste: session replay, autocapture geral,
-console recording, surveys, heatmaps, feature flags, exception tracking.
+**Habilitado nesta pre-sell:** autocapture, heatmaps, Web Vitals, Session
+Replay (com `maskAllInputs`, sem captura de payload de rede, sem console
+recording). **`outbound_hotmart` continua a métrica de conversão
+canônica** — autocapture é contexto complementar, nunca a substitui.
+
+**Deliberadamente mantido desligado**, mesmo o projeto permitindo:
+console log recording (sem utilidade concreta aqui, risco de vazamento
+acidental) e captura de payload de rede (request/response body).
 
 ## Privacidade / IP
 
-⚠️ **Gate manual, fora do código.** O projeto PostHog conectado foi
-observado com `anonymize_ips = false`. É necessário confirmar
-manualmente em **Settings → Project → Privacy → IP data capture
-configuration → Discard client IP data** que o descarte está ativo antes
-de declarar o tracking pronto. Nenhum script aqui consegue confirmar isso
-automaticamente sem uma Personal API Key (que este projeto
-deliberadamente não usa) — por isso esse gate fica **pendente por
-padrão** até confirmação humana explícita. Enquanto pendente, o veredito
-correto é `TRACKING_PRIVACY_GATE_PENDING`, nunca um veredito "pronto".
+✅ **Gate encerrado.** `anonymize_ips = true` confirmado no projeto
+PostHog conectado (verificação externa, 2026-08-08). Formulação factual
+(sem linguagem jurídica absoluta, sem afirmar "nenhum processamento de
+IP"): o projeto está configurado para descartar/processar o IP do
+visitante conforme essa opção — a requisição HTTP ainda carrega o IP até
+o servidor do PostHog antes de qualquer transformação. Detalhe completo
+em `docs/etapa_5_c_v1_contrato_tracking_microteste01.md`.
 
 ## Eventos
 
@@ -170,10 +186,16 @@ carregado — ver o primeiro `if` do arquivo.
 
 - CrUX/`ruff`/`mypy` fora de escopo aqui (mesmo padrão de
   `tools/instagram`/`tools/pagespeed`).
-- O gate de descarte de IP não é verificável por código nesta
-  configuração (ver seção "Privacidade / IP").
+- Sampling de Session Replay (gravar 100% das sessões vs. amostra) não é
+  configurado em código — é uma decisão econômica/de produto que depende
+  de volume real de tráfego, recomendada mas não decidida nesta rodada
+  (ver contrato, seção "Sampling / retenção"). Ajuste via configuração do
+  projeto no PostHog antes de escalar tráfego pago.
 - Nenhuma automação cria a campanha Google Ads — isso é manual, fora
   desta ferramenta, por design.
+- Algumas páginas da documentação oficial retornaram conteúdo truncado
+  nas consultas desta sessão (ver contrato, lista de fontes) — revalidar
+  a doc completa antes do primeiro deploy com tráfego pago real.
 
 ## Troubleshooting
 
