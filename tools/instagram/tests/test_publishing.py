@@ -67,6 +67,28 @@ class TestPrepareNeverHitsNetwork:
         plan = prepare(manifest, StateStore(tmp_path / "state"))
         assert plan.status.value == "BLOCKED"
 
+    def test_prepare_rejects_markdown_wrapped_url(self, tmp_path, valid_jpeg):
+        (tmp_path / "img.jpg").write_bytes(valid_jpeg.read_bytes())
+        raw_url = "https://raw.githubusercontent.com/org/repo/branch/asset.jpg"
+        manifest_path = _write_manifest(tmp_path, media_url=f"[{raw_url}]({raw_url})")
+        manifest = Manifest.load(manifest_path)
+        plan = prepare(manifest, StateStore(tmp_path / "state"))
+        assert plan.status.value == "BLOCKED"
+        assert any("Markdown" in b or "media_url" in b for b in plan.blockers)
+
+    def test_prepare_accepts_real_raw_githubusercontent_url(self, tmp_path, valid_jpeg):
+        (tmp_path / "img.jpg").write_bytes(valid_jpeg.read_bytes())
+        raw_url = (
+            "https://raw.githubusercontent.com/trevodigitalconversoes/"
+            "trevodigitalconversoes.github.io/feature/claude/"
+            "migrar-presell-fotografia-trevo/assets/social/post-02-institucional.jpg"
+        )
+        manifest_path = _write_manifest(tmp_path, media_url=raw_url)
+        manifest = Manifest.load(manifest_path)
+        plan = prepare(manifest, StateStore(tmp_path / "state"))
+        assert plan.status.value == "READY"
+        assert plan.media_url == raw_url
+
     def test_prepare_blocks_png_asset(self, tmp_path, valid_png):
         (tmp_path / "img.jpg").write_bytes(valid_png.read_bytes())  # extensao .jpg, conteudo PNG
         manifest_path = _write_manifest(tmp_path, media_url="https://example.com/img.jpg")
