@@ -41,7 +41,7 @@ tools/instagram/
 ├── manifests/
 │   ├── post-02-institucional.toml
 │   └── post-02-institucional.caption.txt
-└── tests/                   59 testes, sem nenhuma chamada de rede real
+└── tests/                   75 testes, sem nenhuma chamada de rede real
 ```
 
 ### Fronteira de extração
@@ -173,6 +173,77 @@ segredos). **Nunca faz POST.** Se `media_url` não for uma URL
 `http(s)` pública (rejeita `file://`, `localhost`, `127.0.0.1`, etc.),
 o plano fica `BLOCKED` — isso é esperado antes do deploy do site.
 
+### Configurando `media_url` — antes do deploy
+
+Enquanto a página/branch ainda não foi mesclada e publicada em
+`https://trevodigitalconversoes.github.io/...`, é possível testar o
+fluxo inteiro (exceto a publicação em si) apontando `media_url` para o
+conteúdo já commitado na branch via **raw.githubusercontent.com** —
+funciona para qualquer branch de um repositório público, não só
+`main`:
+
+```
+https://raw.githubusercontent.com/<org>/<repo>/<branch>/<caminho-do-arquivo>
+```
+
+Exemplo real usado nesta etapa:
+
+```
+https://raw.githubusercontent.com/trevodigitalconversoes/trevodigitalconversoes.github.io/feature/claude/migrar-presell-fotografia-trevo/assets/social/post-02-institucional.jpg
+```
+
+Essa URL é **temporária** (fica obsoleta quando a branch for mesclada/
+removida) — não é a URL final de produção. Depois do merge/deploy,
+troque para
+`https://trevodigitalconversoes.github.io/assets/social/post-02-institucional.jpg`.
+
+Se você mantiver um manifesto pessoal com essa URL de teste em vez do
+manifesto canônico do post, nomeie-o com o sufixo `.local.toml` (ex.:
+`manifests/post-02-institucional.local.toml`) — esse padrão já está no
+`.gitignore` da ferramenta, então não é commitado.
+
+`prepare` valida a `media_url` de forma rigorosa e rejeita, com
+mensagem de erro explicando o motivo:
+
+- string vazia, `None`, ou só espaço em branco;
+- espaço em branco no início/fim (indício de copiar/colar errado);
+- qualquer um dos caracteres `[` `]` `(` `)` `\` — cobre o erro comum
+  de colar um **link Markdown inteiro** (`[texto](url)`) em vez da URL
+  pura, e o erro de escapar o ponto como se fosse regex
+  (`raw\.githubusercontent.com`, que não é uma URL válida — o hostname
+  correto não tem barra invertida: `raw.githubusercontent.com`);
+- texto que pareça um objeto do PowerShell serializado por engano
+  (ex.: contém `System.Management.Automation` ou `InternalHost`);
+- esquema diferente de `http`/`https`;
+- hostname local (`localhost`, `127.0.0.1`, `*.local`) ou sem ponto.
+
+#### Erro comum no PowerShell: `$host` é reservado
+
+Se você tentar montar a URL manualmente com um comando como:
+
+```powershell
+$host = "raw.githubusercontent.com"   # ERRADO
+```
+
+o PowerShell recusa com
+`VariableNotWritable: Não é possível substituir a variável Host porque
+ela é somente leitura ou constante`. Isso acontece porque `$Host`
+(nomes de variável no PowerShell **não diferenciam maiúsculas de
+minúsculas**, então `$host` e `$Host` são a mesma coisa) é uma
+variável automática do próprio PowerShell — representa o host do
+console (`ConsoleHost`), não é um nome livre para usar. Use qualquer
+outro nome:
+
+```powershell
+$rawHost = "raw.githubusercontent.com"    # correto -- $Host e reservado
+$assetPath = "trevodigitalconversoes/trevodigitalconversoes.github.io/feature/claude/migrar-presell-fotografia-trevo/assets/social/post-02-institucional.jpg"
+$rawUrl = "https://$rawHost/$assetPath"
+```
+
+Prefira, porém, editar a `media_url` diretamente no arquivo `.toml`
+(um editor de texto comum) em vez de reconstruí-la via PowerShell toda
+vez — é mais confiável e menos sujeito a esse tipo de erro.
+
 ### `publish` — publica de verdade
 
 ```powershell
@@ -220,6 +291,8 @@ asset+legenda+conta) já tiver sido publicado antes,
 | `prepare` fica `BLOCKED` por `media_url` | Normal antes do deploy: a URL pública do asset só existe depois do merge/deploy do site |
 | `validate-media` rejeita um PNG | Esperado — a API só aceita JPEG; gere uma versão `.jpg` (ex.: `Pillow`, `img.convert("RGB").save(..., "JPEG")`) |
 | `publish` retorna `PUBLISH_NOT_CONFIRMED` | Falta `--confirm-publish` e/ou `INSTAGRAM_ALLOW_PUBLISH=1` — as duas são obrigatórias |
+| `VariableNotWritable` no PowerShell | Você tentou usar `$host`/`$Host` como nome de variável — é reservado pelo próprio PowerShell (case-insensitive). Use outro nome, ex. `$rawHost` |
+| `prepare` rejeita a `media_url` mesmo parecendo "certa" | Confira se não colou um link Markdown inteiro (`[texto](url)`) em vez da URL pura, e se não há barra invertida (`raw\.githubusercontent.com` é inválido — o correto é `raw.githubusercontent.com`, sem `\`) |
 
 ## Testes
 
@@ -227,14 +300,18 @@ asset+legenda+conta) já tiver sido publicado antes,
 pytest
 ```
 
-59 testes, nenhum faz chamada de rede real (usam
+75 testes, nenhum faz chamada de rede real (usam
 `httpx.MockTransport`). Cobrem: sanitização de segredos, config sem/
 com token, `inspect` read-only, `validate-media` (JPEG válido, PNG
 rejeitado, aspect ratio inválido), manifesto válido/inválido/com
 segredo proibido, cliente HTTP (GET/POST corretos, erros
 sanitizados, timeout), salvaguardas de `publish` (zero confirmação,
 uma confirmação, duas confirmações, plano bloqueado, duplicação),
-idempotência local.
+idempotência local, e validação de `media_url` (`test_media_url_validation.py`
++ casos de `prepare` em `test_publishing.py`): aceita URL real de
+`raw.githubusercontent.com`, rejeita link Markdown colado por engano,
+barra invertida (escape de regex indevido), objeto do PowerShell
+serializado, string vazia/espaço, host local.
 
 ## Fora de escopo nesta fatia
 
