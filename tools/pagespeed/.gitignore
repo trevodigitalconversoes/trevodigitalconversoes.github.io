@@ -1,0 +1,18 @@
+# Segredos locais -- nunca commitar
+.env
+.env.*
+!.env.example
+
+# Saida de execucao -- evidencia bruta pode ser grande, cada dev/execucao
+# decide o que promover para o repo (ver README: "Como versionar evidencia").
+evidencias/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.venv/
+venv/
