@@ -1,21 +1,6 @@
 /*
  * Tema próprio desta pre-sell (independente do site institucional
- * Trevo em /styles.css). Baseado no Figma aprovado "Pre-sell v1 —
- * arOS aprovado" e na migração do PR #51 (afiliados-mega-lab).
- *
- * Nem todos os tokens de cor do Figma puderam ser confirmados: o
- * PR #51 referenciava um `tokens.module.css` que nunca chegou a ser
- * commitado (gap documentado na própria etapa de origem), e o limite
- * de chamadas do Figma MCP (plano Starter) também foi atingido nesta
- * migração antes de conseguir reconsultar o arquivo. Os 4 valores
- * abaixo são literais, citados no PR #51
- * (`etapa_2_a_v1_implementacao_presell.md`, seção "Limitações
- * conhecidas"): #e0deeb / #e5e3f0 (texto em painel escuro) e
- * #edebf5 / #f0edf7 (marcadores em painel escuro). Os demais tokens
- * (ink, muted, accent, fundos, raios) são uma estimativa razoável de
- * contraste/hierarquia, não uma leitura literal do Figma. Ver
- * docs/etapa_3_a_v1_migracao_presell_trevo.md para o registro
- * completo dessa limitação.
+ * Trevo em /styles.css).
  */
 
 * {
