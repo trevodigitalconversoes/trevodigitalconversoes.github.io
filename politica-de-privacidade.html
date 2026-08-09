@@ -16,7 +16,7 @@
     <article>
       <p class="eyebrow">Privacidade</p>
       <h1>Política de Privacidade</h1>
-      <p><strong>Última atualização:</strong> 04/07/2026</p>
+      <p><strong>Última atualização:</strong> 08/08/2026</p>
 
       <h2>1. Sobre esta política</h2>
       <p>
@@ -27,19 +27,45 @@
 
       <h2>2. Dados que podem ser coletados</h2>
       <p>
-        Atualmente, este site não possui formulários próprios, newsletter, pixels ou qualquer ferramenta
-        própria de rastreamento/analytics. Nenhuma informação de identificação é coletada diretamente pelas
-        páginas deste site.
+        Este site não possui formulários próprios nem newsletter. Algumas páginas de produto (pre-sells)
+        utilizam a ferramenta de analytics <strong>PostHog</strong> para medir visitas, cliques em botões de
+        saída para a Hotmart e uso geral da página. Essas páginas usam um identificador técnico de sessão
+        (gerado pelo PostHog, sem nome, e-mail ou outro dado que identifique diretamente o visitante) e podem
+        registrar:
       </p>
+      <ul>
+        <li>Visitas à página, cliques em botões (inclusive fora do botão de saída para a Hotmart) e rolagem,
+          associados a esse identificador técnico de sessão — não a um perfil de pessoa. O site não chama a
+          função de identificação de pessoa do PostHog (<code>identify</code>) em nenhum momento, então
+          nenhum perfil de pessoa é criado na plataforma a partir dessas páginas.</li>
+        <li>Mapas de calor agregados de onde os visitantes clicam/rolam na página, e métricas técnicas de
+          velocidade de carregamento (Web Vitals) — associados ao mesmo identificador técnico de sessão.</li>
+        <li>Gravação de sessões de navegação (replay da tela), para entender como o site é usado. Campos de
+          formulário são mascarados/ocultados automaticamente nessa gravação por padrão da ferramenta; como
+          esta pre-sell não possui formulário ou checkout próprio, não há campo desse tipo a gravar hoje. A
+          configuração usada aqui não captura o conteúdo de requisições de rede (corpo de dados trocados com
+          servidores) nem o console técnico do navegador.</li>
+        <li>Cookies/armazenamento local do navegador, criados pelo próprio PostHog, para reconhecer a mesma
+          sessão de navegação em visitas subsequentes — sem conter nome, e-mail ou outro dado que identifique
+          diretamente a pessoa.</li>
+        <li>Parâmetros de campanha reconhecidos (ex.: utm_source, utm_campaign, gclid) presentes na URL de
+          chegada; qualquer outro parâmetro de URL é descartado antes do envio ao PostHog.</li>
+        <li>O projeto PostHog utilizado está configurado para descartar/processar o endereço IP do visitante
+          conforme essa opção da plataforma, antes de ficar disponível nos relatórios — isso não significa
+          que o endereço IP nunca chega ao servidor do PostHog durante a requisição, apenas que a
+          configuração aplicada descarta/processa esse dado conforme descrito.</li>
+        <li>Os dados de gravação de sessão são mantidos por um período limitado (atualmente 30 dias) e depois
+          descartados pela própria plataforma.</li>
+      </ul>
       <p>
         Caso você entre em contato diretamente por e-mail ou redes sociais (canais listados na seção
         "Contato"), os dados fornecidos nessa conversa são tratados pela própria plataforma de comunicação
         utilizada (e-mail, Instagram, etc.), conforme a política de privacidade dela.
       </p>
       <p>
-        Se, no futuro, alguma ferramenta de análise de audiência, pixel ou cookie de terceiros for adicionada
-        a este site, esta Política de Privacidade será atualizada para descrever exatamente o que passa a ser
-        coletado, antes da publicação dessa mudança.
+        Se, no futuro, alguma outra ferramenta de análise de audiência, pixel ou cookie de terceiros for
+        adicionada a este site, esta Política de Privacidade será atualizada para descrever exatamente o que
+        passa a ser coletado, antes da publicação dessa mudança.
       </p>
 
       <h2>3. Finalidade do uso dos dados</h2>
@@ -58,11 +84,12 @@
 
       <h2>5. Compartilhamento com terceiros</h2>
       <p>
-        Este site é hospedado no GitHub Pages e não compartilha dados com ferramentas próprias de análise,
-        anúncio ou automação, pois nenhuma está em uso no momento. Links de afiliado direcionam para páginas
-        de terceiros (como a Hotmart), que possuem suas próprias políticas de privacidade e são responsáveis
-        pelo tratamento dos dados fornecidos ali — recomendamos a leitura da política de cada plataforma antes
-        de uma compra. Não vendemos listas de contatos.
+        Este site é hospedado no GitHub Pages. Conforme descrito na seção 2, algumas páginas de produto usam
+        o PostHog como ferramenta de analytics, associada a um identificador técnico de sessão, não a um
+        perfil de pessoa identificada. Links de afiliado direcionam para
+        páginas de terceiros (como a Hotmart), que possuem suas próprias políticas de privacidade e são
+        responsáveis pelo tratamento dos dados fornecidos ali — recomendamos a leitura da política de cada
+        plataforma antes de uma compra. Não vendemos listas de contatos.
       </p>
 
       <h2>6. Direitos do usuário</h2>
