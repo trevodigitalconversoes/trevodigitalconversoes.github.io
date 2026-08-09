@@ -93,6 +93,9 @@
     }
   }
 
+  // Fail-closed por design: se a sanitizacao falhar por qualquer motivo,
+  // retorna null (nunca a URL bruta). Quem chama (beforeSend) trata null
+  // removendo a propriedade em vez de transmiti-la sem sanitizar.
   function sanitizeCurrentUrl(rawUrl) {
     try {
       var url = new URL(rawUrl);
@@ -104,17 +107,29 @@
       var query = cleanParams.toString();
       return url.origin + url.pathname + (query ? "?" + query : "");
     } catch (err) {
-      return rawUrl;
+      return null;
     }
   }
 
+  // Fail-closed: uma excecao aqui (ou uma falha de sanitizeCurrentUrl)
+  // NUNCA deixa a URL bruta (com query string completa) ser transmitida.
+  // Se nao for possivel produzir uma versao segura, a propriedade e
+  // removida do evento em vez de enviada sem sanitizar -- o evento ainda
+  // e enviado, so sem $current_url.
   function beforeSend(event) {
     try {
       if (event && event.properties && typeof event.properties.$current_url === "string") {
-        event.properties.$current_url = sanitizeCurrentUrl(event.properties.$current_url);
+        var sanitized = sanitizeCurrentUrl(event.properties.$current_url);
+        if (sanitized === null) {
+          delete event.properties.$current_url;
+        } else {
+          event.properties.$current_url = sanitized;
+        }
       }
     } catch (err) {
-      /* nao bloqueia o evento por causa de um erro de sanitizacao */
+      if (event && event.properties) {
+        delete event.properties.$current_url;
+      }
     }
     return event;
   }
@@ -210,4 +225,15 @@
   } else {
     instrumentAllCtas();
   }
+
+  // Exposto de proposito para teste de regressao automatizado (trevo-ops,
+  // tools/tracking/tests/) -- funcoes puras de transformacao de string/URL,
+  // nunca incluem token/config real. Nao apagar: e a unica forma de testar
+  // este arquivo sem duplicar a logica em outra linguagem.
+  window.__trevoTrackingInternals__ = {
+    sanitizeCurrentUrl: sanitizeCurrentUrl,
+    beforeSend: beforeSend,
+    buildHotmartSrc: buildHotmartSrc,
+    buildHotlink: buildHotlink
+  };
 })();
