@@ -51,7 +51,14 @@
           <a class="cta-button" href="https://go.hotmart.com/V106592210H" target="_blank" rel="noopener noreferrer sponsored" data-cta-position="hero">Quero conhecer o material</a>
         </div>
         <div class="hero-image">
-          <img src="assets/mockup-hero-04.jpg" alt="10 dicas de fotografia + 18 presets de Lightroom" width="440" height="294" loading="eager" />
+          <picture>
+            <source
+              type="image/webp"
+              srcset="assets/mockup-hero-04-440.webp 440w, assets/mockup-hero-04-640.webp 640w, assets/mockup-hero-04-880.webp 880w"
+              sizes="(min-width: 532px) 440px, calc(100vw - 92px)"
+            />
+            <img src="assets/mockup-hero-04.jpg" alt="10 dicas de fotografia + 18 presets de Lightroom" width="440" height="294" loading="eager" fetchpriority="high" />
+          </picture>
           <p class="image-caption">10 dicas de fotografia + 18 presets de Lightroom</p>
         </div>
       </div>
