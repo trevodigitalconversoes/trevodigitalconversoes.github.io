@@ -1,18 +1,11 @@
 /*
  * Tracking do Microteste Comercial 01 (PostHog + HotLink Hotmart).
- * Gerado/mantido a partir de trevodigitalconversoes/trevo-ops (privado)
- * -- contrato completo e gerador em trevo-ops/tools/tracking/. Este
- * arquivo e o unico artefato de tracking que vive neste repo publico
- * (roda no navegador).
+ * Unico artefato de tracking que roda no navegador nesta pre-sell.
  *
- * A partir de 2026-08-08 este arquivo tambem habilita, via
- * config.posthogInitOptions (gerado em Python, em trevo-ops):
- * autocapture, heatmaps, Web Vitals e Session Replay -- decisao
- * explicita do usuario de usar progressivamente mais capacidades do
- * PostHog nesta pre-sell.
- * Esse objeto e repassado a posthog.init() sem transformacao (ver
- * initPostHog abaixo), entao qualquer mudanca de config fica so no
- * Python.
+ * Habilita, via config.posthogInitOptions: autocapture, heatmaps, Web
+ * Vitals e Session Replay -- decisao explicita de usar progressivamente
+ * mais capacidades do PostHog nesta pre-sell. Esse objeto e repassado a
+ * posthog.init() sem transformacao (ver initPostHog abaixo).
  *
  * O que NAO muda com isso: `outbound_hotmart` continua a metrica de
  * conversao explicita e canonica (autocapture nao a substitui, so
@@ -226,10 +219,10 @@
     instrumentAllCtas();
   }
 
-  // Exposto de proposito para teste de regressao automatizado (trevo-ops,
-  // tools/tracking/tests/) -- funcoes puras de transformacao de string/URL,
-  // nunca incluem token/config real. Nao apagar: e a unica forma de testar
-  // este arquivo sem duplicar a logica em outra linguagem.
+  // Exposto de proposito para testes de regressao automatizados --
+  // funcoes puras de transformacao de string/URL, nunca incluem
+  // token/config real. Nao apagar: e a unica forma de testar este
+  // arquivo sem duplicar a logica em outra linguagem.
   window.__trevoTrackingInternals__ = {
     sanitizeCurrentUrl: sanitizeCurrentUrl,
     beforeSend: beforeSend,
