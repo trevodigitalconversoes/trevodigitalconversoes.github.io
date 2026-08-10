@@ -219,10 +219,8 @@
     instrumentAllCtas();
   }
 
-  // Exposto de proposito para testes de regressao automatizados --
-  // funcoes puras de transformacao de string/URL, nunca incluem
-  // token/config real. Nao apagar: e a unica forma de testar este
-  // arquivo sem duplicar a logica em outra linguagem.
+  // Funcoes puras de transformacao de string/URL expostas de proposito;
+  // nunca incluem token/config real.
   window.__trevoTrackingInternals__ = {
     sanitizeCurrentUrl: sanitizeCurrentUrl,
     beforeSend: beforeSend,
