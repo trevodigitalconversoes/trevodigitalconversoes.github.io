@@ -36,3 +36,4 @@ summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:
 .site-footer{max-width:var(--max);margin:0 auto;padding:8px 16px 40px;font-size:.92rem;color:var(--muted)}
 .copyright,.small{text-align:center;margin:.4em 0}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.cover{margin:20px 0 0}.cover img{display:block;width:100%;max-width:420px;height:auto;border-radius:16px;border:1px solid var(--line)}.cover figcaption{font:.85rem -apple-system,Arial,sans-serif;color:var(--muted);margin-top:6px}
