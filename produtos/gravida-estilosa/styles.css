@@ -37,3 +37,4 @@ summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:
 .copyright,.small{text-align:center;margin:.4em 0}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 .cover{margin:20px 0 0}.cover img{display:block;width:100%;max-width:420px;height:auto;border-radius:16px;border:1px solid var(--line)}.cover figcaption{font:.85rem -apple-system,Arial,sans-serif;color:var(--muted);margin-top:6px}
+.checks{list-style:none;padding-left:0}.checks li{padding-left:1.6em;position:relative;margin:.3em 0}.checks li::before{content:"\2713";position:absolute;left:0;color:var(--taupe-dark);font-weight:700}

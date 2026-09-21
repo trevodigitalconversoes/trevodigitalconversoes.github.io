@@ -27,7 +27,8 @@
           var url = new URL(anchors[i].getAttribute("href"));
           // src NAO e enviado: exigiria um experimentId proprio, ainda nao
           // definido pelo proprietario (mt01 pertence a outro microteste).
-          // O parametro fixo ref (afiliado) ja esta no href e nunca e alterado.
+          // ref, dp, redirectionUrl e o codigo de afiliado ja estao no href oficial da
+          // Hotmart e nunca sao alterados: so utm_* (lista fechada abaixo) e acrescentado.
           forwarded.forEach(function (k) { if (params[k]) url.searchParams.set(k, params[k]); });
           anchors[i].setAttribute("href", url.toString());
         } catch (e) { /* mantem o href estatico */ }

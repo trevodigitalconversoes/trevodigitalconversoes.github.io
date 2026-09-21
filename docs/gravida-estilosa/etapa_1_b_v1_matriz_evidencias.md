@@ -28,4 +28,7 @@ Rodada 2: novas evidências fornecidas pelo proprietário a partir da Hotmart (p
 | Módulo 3: O Corpo da Gestante; PDF Módulo | Hotmart | 21/09/2026 | CONFIRMADA **(R2)** | SIM | |
 | Módulo 4: Os melhores tecidos para a gestante; PDF Módulo | Hotmart | 21/09/2026 | CONFIRMADA **(R2)** | SIM | |
 | Código de afiliado do produto = H106516913T; oferta = xkc2j92m (NÃO é afiliado); V106592210H pertence a outro produto (ID 3651651) | proprietário + teste de fluxo | 21/09/2026 | CONFIRMADA **(R2)** | interno | Nunca usar V106592210H aqui. |
-| Imagem de divulgação (Postdoinstagram...png, 675×675) | fornecida pelo proprietário; usada pela Hotmart | 21/09/2026 | CONFIRMADA (proveniência) | SIM | Contém @nath_consultoria e o domínio antigo dentro da imagem; alt text descreve. |
+| Imagem de divulgação (Postdoinstagram...png, 675×675) | fornecida pelo proprietário; usada pela Hotmart | 21/09/2026 | CONFIRMADA (proveniência) | SIM | Original preservado; derivada web remove @nath_consultoria e o domínio externo (contato indisponível). |
+| Produto SALES_ENABLED/PUBLISHED/ACTIVE_ON_PLATFORM; afiliação ACTIVE; usesExternalPage = true | Hotmart API (resultado fornecido pelo proprietário) | 21/09/2026 | CONFIRMADA **(R3)** | interno | SALES_PAGE aponta ao site externo inacessível: não usar. |
+| Google Ads URL de PRODUCT_PAGE (go.hotmart.com/H106516913T?dp=1&redirectionUrl=…Q94220392S) | Hotmart (fornecido) + teste público | 21/09/2026 | CONFIRMADA **(R3)** | CTA | Teste: redireciona para a página do produto na Hotmart com `ref=H106516913T`, sem passar pelo domínio externo. |
+| Endereço externo da produtora inacessível | teste TLS/HTTP | 21/09/2026 | CONFIRMADA **(R3)** | SIM, em nota discreta | Não chamado de "site oficial"; Instagram não mencionado. |
